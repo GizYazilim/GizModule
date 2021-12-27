@@ -9,8 +9,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 ThemeData get activeTheme => Theme.of(gizContext);
+
 GizThemeData get activeGizTheme => Theme.of(gizContext) as GizThemeData;
 
 //region giz_module
@@ -66,25 +68,31 @@ abstract class GizStatefulWidget extends StatefulWidget {
     }
   }
 
+  void initState() {}
+
   @override
   State<StatefulWidget> createState() {
     if (Platform.isAndroid) {
-      return state = GizState((x) => WillPopScope(
-            onWillPop: onBackPressed,
-            child: GestureDetector(
+      return state = GizState(
+          (x) => WillPopScope(
+                onWillPop: onBackPressed,
+                child: GestureDetector(
+                  onTap: () {
+                    FocusScope.of(gizContext).requestFocus(new FocusNode());
+                  },
+                  child: buildWidget(x),
+                ),
+              ),
+          initState);
+    }
+    return state = GizState(
+        (x) => GestureDetector(
               onTap: () {
                 FocusScope.of(gizContext).requestFocus(new FocusNode());
               },
               child: buildWidget(x),
             ),
-          ));
-    }
-    return state = GizState((x) => GestureDetector(
-          onTap: () {
-            FocusScope.of(gizContext).requestFocus(new FocusNode());
-          },
-          child: buildWidget(x),
-        ));
+        initState);
   }
 
   Future<bool> onBackPressed() async {
@@ -94,14 +102,21 @@ abstract class GizStatefulWidget extends StatefulWidget {
 
 class GizState<T extends GizStatefulWidget> extends State<T> {
   WidgetGetter<Widget> buildWidget;
+  Function function;
 
-  GizState(this.buildWidget);
+  GizState(this.buildWidget, this.function);
 
   @override
   Widget build(BuildContext context) {
     widget.state = this;
     widget.buildContext = context;
     return buildWidget(this);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    function();
   }
 }
 
@@ -484,7 +499,7 @@ class GizThemeData {
         accentColor: accentColor,
         accentColorBrightness: accentColorBrightness,
         canvasColor: canvasColor,
-        shadowColor: shadowColor??HexColor.fromHex("#edebeb"),
+        shadowColor: shadowColor ?? HexColor.fromHex("#edebeb"),
         scaffoldBackgroundColor: scaffoldBackgroundColor,
         bottomAppBarColor: bottomAppBarColor,
         cardColor: cardColor,
@@ -1300,7 +1315,7 @@ class GizApp extends StatelessWidget {
 }
 //endregion
 
-class EditText extends StatelessWidget {
+class GizEditText extends StatelessWidget {
   TextEditingController controller;
   String hint;
   bool showClearButton;
@@ -1308,7 +1323,7 @@ class EditText extends StatelessWidget {
   bool enabled;
   ValueChanged<String> valueChanged;
 
-  EditText(this.controller,
+  GizEditText(this.controller,
       {this.hint,
       this.showClearButton = true,
       this.showBarcodeButton = false,
@@ -1338,6 +1353,7 @@ class EditText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
+
       valueListenable: _listener,
       builder: (context, value, child) => Padding(
         padding: const EdgeInsets.all(4.0),
@@ -1403,18 +1419,18 @@ class EditText extends StatelessWidget {
 
 //region SearchText
 
-class SearchTextEditingController extends ValueNotifier<SearchTextValue> {
-  SearchTextEditingController({SearchTextValue value})
-      : super(value ?? SearchTextValue());
+class GizSearchTextEditingController extends ValueNotifier<GizSearchTextValue> {
+  GizSearchTextEditingController({GizSearchTextValue value})
+      : super(value ?? GizSearchTextValue());
 }
 
-class SearchTextValue {
+class GizSearchTextValue {
   dynamic item, id;
   String title = "";
 }
 
-class SearchText extends StatelessWidget {
-  SearchTextEditingController controller;
+class GizSearchText extends StatelessWidget {
+  GizSearchTextEditingController controller;
   String hint;
   bool showClearButton;
   bool showSearchButton;
@@ -1429,7 +1445,7 @@ class SearchText extends StatelessWidget {
     _listener.value = !_listener.value;
   }
 
-  SearchText(this.controller,
+  GizSearchText(this.controller,
       {this.hint,
       this.showClearButton = true,
       this.showSearchButton = true,
@@ -1521,8 +1537,8 @@ class SearchText extends StatelessWidget {
 
 //regionDateText
 
-class DateText extends StatelessWidget {
-  DateTextEditingController controller;
+class GizDateText extends StatelessWidget {
+  GizDateTextEditingController controller;
   String hint;
   bool showClearButton;
   bool showSearchButton;
@@ -1530,13 +1546,13 @@ class DateText extends StatelessWidget {
   ValueChanged<dynamic> valueChanged;
 
   DateTime get dateTime => controller.value;
+
   set dateTime(DateTime dateTime) {
     controller.value = dateTime;
     _listener.value = !_listener.value;
-
   }
 
-  DateText(
+  GizDateText(
     this.controller, {
     this.hint,
     this.showClearButton = true,
@@ -1553,15 +1569,15 @@ class DateText extends StatelessWidget {
       valueListenable: _listener,
       builder: (context, value, child) => InkWell(
         onTap: () async {
-         try{
-           dateTime = (           await showDatePicker(
-             context: gizContext,
-             initialDate: dateTime,
-             firstDate: DateTime(DateTime.now().year, 1, 1),
-             lastDate: DateTime(DateTime.now().year, 12, 31),
-           ))??dateTime;
-
-         }catch(ex){}
+          try {
+            dateTime = (await showDatePicker(
+                  context: gizContext,
+                  initialDate: dateTime,
+                  firstDate: DateTime(DateTime.now().year, 1, 1),
+                  lastDate: DateTime(DateTime.now().year, 12, 31),
+                )) ??
+                dateTime;
+          } catch (ex) {}
           //
         },
         child: Padding(
@@ -1620,7 +1636,313 @@ class DateText extends StatelessWidget {
   }
 }
 
-class DateTextEditingController extends ValueNotifier<DateTime> {
-  DateTextEditingController({DateTime value}) : super(value ?? DateTime.now());
+class GizDateTextEditingController extends ValueNotifier<DateTime> {
+  GizDateTextEditingController({DateTime value})
+      : super(value ?? DateTime.now());
 }
 //endregion
+
+class GizSwitch extends StatelessWidget {
+  bool value;
+  String hint;
+  bool showClearButton;
+  bool showBarcodeButton;
+  bool enabled;
+  ValueChanged<bool> valueChanged;
+
+  GizSwitch(
+      {this.value = false,
+      this.hint,
+      this.showClearButton = true,
+      this.showBarcodeButton = false,
+      this.enabled = true,
+      this.valueChanged}) {
+    // key = GlobalKey();
+  }
+
+  ValueNotifier<bool> _listener = ValueNotifier(false);
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: _listener,
+      builder: (context, value, child) => Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: SwitchListTile(
+          tileColor: HexColor.fromHex("#edebeb"),
+          title: Text(hint),
+          value: this.value,
+          onChanged: (value) {
+            this.value = value;
+            if(valueChanged != null)
+              valueChanged(this.value);
+            _listener.value = !_listener.value;
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class GizDropdown<T> extends StatefulWidget {
+  final Widget child;
+  final void Function(T, int) onChange;
+
+  final List<GizDropdownItem<T>> items;
+  final GizDropdownStyle dropdownStyle;
+
+  final GizDropdownButtonStyle dropdownButtonStyle;
+
+  final String hint;
+
+  final Icon icon;
+  final bool hideIcon;
+
+  final bool leadingIcon;
+
+  GizDropdown(
+      {Key key,
+      this.hideIcon = false,
+      @required this.child,
+      @required this.items,
+      this.dropdownStyle = const GizDropdownStyle(),
+      this.dropdownButtonStyle = const GizDropdownButtonStyle(),
+      this.icon,
+      this.leadingIcon = false,
+      this.onChange,
+      this.hint})
+      : super(key: key);
+
+  @override
+  _GizDropdownDropdownState<T> createState() => _GizDropdownDropdownState<T>();
+}
+
+class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
+    with TickerProviderStateMixin {
+  final LayerLink _layerLink = LayerLink();
+  OverlayEntry _overlayEntry;
+  bool _isOpen = false;
+  int _currentIndex = -1;
+  AnimationController _animationController;
+  Animation<double> _expandAnimation;
+  Animation<double> _rotateAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _expandAnimation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+    _rotateAnimation = Tween(begin: 0.0, end: 0.5).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var style = widget.dropdownButtonStyle;
+    // link the overlay to the button
+    return CompositedTransformTarget(
+      link: this._layerLink,
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (widget.hint != null)
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  widget.hint,
+                  style: TextStyle(color: activeTheme.primaryColor),
+                ),
+              ),
+            Container(
+              width: double.maxFinite,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: activeTheme.shadowColor,
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
+              child: InkWell(
+                onTap: _toggleDropdown,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    if (_currentIndex == -1) ...[
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: widget.child,
+                      )),
+                    ] else ...[
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: widget.items[_currentIndex],
+                      )),
+                    ],
+                    if (!widget.hideIcon)
+                      RotationTransition(
+                        turns: _rotateAnimation,
+                        child: widget.icon ?? Icon(Icons.arrow_drop_down),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    // find the size and position of the current widget
+    RenderBox renderBox = context.findRenderObject();
+    var size = renderBox.size;
+
+    var offset = renderBox.localToGlobal(Offset.zero);
+    var topOffset = offset.dy + size.height + 5;
+    return OverlayEntry(
+      // full screen GestureDetector to register when a
+      // user has clicked away from the dropdown
+      builder: (context) => GestureDetector(
+        onTap: () => _toggleDropdown(close: true),
+        behavior: HitTestBehavior.translucent,
+        // full screen container to register taps anywhere and close drop down
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              Positioned(
+                left: offset.dx,
+                top: topOffset,
+                width: widget.dropdownStyle.width ?? size.width,
+                child: CompositedTransformFollower(
+                  offset:
+                      widget.dropdownStyle.offset ?? Offset(0, size.height + 5),
+                  link: this._layerLink,
+                  showWhenUnlinked: false,
+                  child: Material(
+                    elevation: widget.dropdownStyle.elevation ?? 0,
+                    borderRadius:
+                        widget.dropdownStyle.borderRadius ?? BorderRadius.zero,
+                    color: widget.dropdownStyle.color,
+                    child: SizeTransition(
+                      axisAlignment: 1,
+                      sizeFactor: _expandAnimation,
+                      child: ConstrainedBox(
+                        constraints: widget.dropdownStyle.constraints ??
+                            BoxConstraints(
+                              maxHeight: MediaQuery.of(context).size.height -
+                                  topOffset -
+                                  15,
+                            ),
+                        child: ListView(
+                          padding:
+                              widget.dropdownStyle.padding ?? EdgeInsets.zero,
+                          shrinkWrap: true,
+                          children: widget.items.asMap().entries.map((item) {
+                            return InkWell(
+                              onTap: () {
+                                setState(() => _currentIndex = item.key);
+                                widget.onChange(item.value.value, item.key);
+                                _toggleDropdown();
+                              },
+                              child: item.value,
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _toggleDropdown({bool close = false}) async {
+    if (_isOpen || close) {
+      await _animationController.reverse();
+      this._overlayEntry.remove();
+      setState(() {
+        _isOpen = false;
+      });
+    } else {
+      this._overlayEntry = this._createOverlayEntry();
+      Overlay.of(context).insert(this._overlayEntry);
+      setState(() => _isOpen = true);
+      _animationController.forward();
+    }
+  }
+}
+
+class GizDropdownItem<T> extends StatelessWidget {
+  final T value;
+  final Widget child;
+
+  const GizDropdownItem({Key key, this.value, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return child;
+  }
+}
+
+class GizDropdownButtonStyle {
+  final MainAxisAlignment mainAxisAlignment;
+  final ShapeBorder shape;
+  final double elevation;
+  final Color backgroundColor;
+  final EdgeInsets padding;
+  final BoxConstraints constraints;
+  final double width;
+  final double height;
+  final Color primaryColor;
+
+  const GizDropdownButtonStyle({
+    this.mainAxisAlignment,
+    this.backgroundColor,
+    this.primaryColor,
+    this.constraints,
+    this.height,
+    this.width,
+    this.elevation,
+    this.padding,
+    this.shape,
+  });
+}
+
+class GizDropdownStyle {
+  final BorderRadius borderRadius;
+  final double elevation;
+  final Color color;
+  final EdgeInsets padding;
+  final BoxConstraints constraints;
+
+  /// position of the top left of the dropdown relative to the top left of the button
+  final Offset offset;
+
+  ///button width must be set for this to take effect
+  final double width;
+
+  const GizDropdownStyle({
+    this.constraints,
+    this.offset,
+    this.width,
+    this.elevation,
+    this.color,
+    this.padding,
+    this.borderRadius,
+  });
+}
