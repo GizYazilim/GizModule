@@ -1111,6 +1111,8 @@ final String svgCheck =
 //region  httpRequest
 extension HttpResponseParsing on http.Response {
   get decode => jsonDecode(utf8.decode(this.bodyBytes));
+
+  bool get isOk => this.statusCode >= 200 && this.statusCode < 300;
 }
 
 class httpRequest {
@@ -1353,7 +1355,6 @@ class GizEditText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-
       valueListenable: _listener,
       builder: (context, value, child) => Padding(
         padding: const EdgeInsets.all(4.0),
@@ -1674,8 +1675,7 @@ class GizSwitch extends StatelessWidget {
           value: this.value,
           onChanged: (value) {
             this.value = value;
-            if(valueChanged != null)
-              valueChanged(this.value);
+            if (valueChanged != null) valueChanged(this.value);
             _listener.value = !_listener.value;
           },
         ),
