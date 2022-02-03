@@ -1342,6 +1342,7 @@ class GizEditText extends StatelessWidget {
   bool enabled;
   ValueChanged<String> valueChanged;
   Icon icon;
+  TextStyle textStyle;
 
 
   GizEditText(this.controller,
@@ -1350,7 +1351,8 @@ class GizEditText extends StatelessWidget {
       this.showBarcodeButton = false,
       this.enabled = true,
       this.valueChanged,
-      this.icon});
+      this.icon,
+      this.textStyle});
 
   ValueNotifier<bool> _listener = ValueNotifier(false);
 
@@ -1407,6 +1409,7 @@ class GizEditText extends StatelessWidget {
                                   InputDecoration(border: InputBorder.none),
                               controller: controller,
                               onSubmitted: valueChanged,
+                              style: textStyle,
                             ),
                           ),
                           if (showClearButton)
@@ -1436,7 +1439,7 @@ class GizEditText extends StatelessWidget {
                                     padding: const EdgeInsets.all(4.0),
                                     child: icon,
                                   ),
-                                  Text(controller.text),
+                                  Text(controller.text,style: textStyle,),
                                 ],
                               ),
                             ),
@@ -1472,6 +1475,7 @@ class GizSearchText extends StatelessWidget {
   bool enabled;
   ValueChanged<dynamic> valueChanged;
   GestureTapCallback onClick;
+  TextStyle textStyle;
 
   String get title => controller.value.title;
 
@@ -1486,7 +1490,8 @@ class GizSearchText extends StatelessWidget {
       this.showSearchButton = true,
       this.enabled = true,
       this.valueChanged,
-      this.onClick});
+      this.onClick,
+      this.textStyle});
 
   ValueNotifier<bool> _listener = ValueNotifier(false);
 
@@ -1521,7 +1526,7 @@ class GizSearchText extends StatelessWidget {
                               Flexible(
                                 child: Container(
                                     width: double.maxFinite,
-                                    child: Text(title)),
+                                    child: Text(title,style: textStyle,)),
                               ),
                               IconButton(
                                   padding: EdgeInsets.all(2),
@@ -1554,7 +1559,7 @@ class GizSearchText extends StatelessWidget {
                               Flexible(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text("controller.text"),
+                                  child: Text("",style: textStyle),
                                 ),
                               ),
                             ],
@@ -1579,7 +1584,7 @@ class GizDateText extends StatelessWidget {
   bool showSearchButton;
   bool enabled;
   ValueChanged<dynamic> valueChanged;
-
+  TextStyle textStyle;
   DateTime get dateTime => controller.value;
 
   set dateTime(DateTime dateTime) {
@@ -1594,6 +1599,7 @@ class GizDateText extends StatelessWidget {
     this.showSearchButton = true,
     this.enabled = true,
     this.valueChanged,
+        this.textStyle
   });
 
   ValueNotifier<bool> _listener = ValueNotifier(false);
@@ -1640,7 +1646,7 @@ class GizDateText extends StatelessWidget {
                               Flexible(
                                 child: Container(
                                     width: double.maxFinite,
-                                    child: Text(controller?.value.toFormat())),
+                                    child: Text(controller?.value.toFormat(),style: textStyle)),
                               ),
                               IconButton(
                                   onPressed: () {},
@@ -1657,7 +1663,7 @@ class GizDateText extends StatelessWidget {
                               Flexible(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text("controller.text"),
+                                  child: Text(controller?.value.toFormat()),
                                 ),
                               ),
                             ],
@@ -1684,6 +1690,7 @@ class GizSwitch extends StatelessWidget {
   bool showBarcodeButton;
   bool enabled;
   ValueChanged<bool> valueChanged;
+  TextStyle textStyle;
 
   GizSwitch(
       {this.value = false,
@@ -1691,7 +1698,8 @@ class GizSwitch extends StatelessWidget {
       this.showClearButton = true,
       this.showBarcodeButton = false,
       this.enabled = true,
-      this.valueChanged}) {
+      this.valueChanged,
+      this.textStyle}) {
     // key = GlobalKey();
   }
 
@@ -1705,7 +1713,7 @@ class GizSwitch extends StatelessWidget {
         padding: const EdgeInsets.all(4.0),
         child: SwitchListTile(
           tileColor: HexColor.fromHex("#edebeb"),
-          title: Text(hint),
+          title: Text(hint, style: textStyle,),
           value: this.value,
           onChanged: (value) {
             this.value = value;
