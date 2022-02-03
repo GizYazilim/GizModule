@@ -1341,13 +1341,16 @@ class GizEditText extends StatelessWidget {
   bool showBarcodeButton;
   bool enabled;
   ValueChanged<String> valueChanged;
+  Icon icon;
+
 
   GizEditText(this.controller,
       {this.hint,
       this.showClearButton = true,
       this.showBarcodeButton = false,
       this.enabled = true,
-      this.valueChanged});
+      this.valueChanged,
+      this.icon});
 
   ValueNotifier<bool> _listener = ValueNotifier(false);
 
@@ -1373,64 +1376,78 @@ class GizEditText extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: _listener,
-      builder: (context, value, child) => Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (hint != null)
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                  hint,
-                  style: TextStyle(color: activeTheme.primaryColor),
+      builder: (context, value, child) {
+        return Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (hint != null)
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    hint,
+                    style: TextStyle(color: activeTheme.primaryColor),
+                  ),
                 ),
+              Container(
+                decoration: BoxDecoration(
+                    color: activeTheme.shadowColor,
+                    borderRadius: BorderRadius.all(Radius.circular(5))),
+                child: enabled
+                    ? Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: icon,
+                          ),
+                          Flexible(
+                            child: TextField(
+                              decoration:
+                                  InputDecoration(border: InputBorder.none),
+                              controller: controller,
+                              onSubmitted: valueChanged,
+                            ),
+                          ),
+                          if (showClearButton)
+                            IconButton(
+                                onPressed: () => clear(),
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.red,
+                                )),
+                          if (showBarcodeButton)
+                            IconButton(
+                                onPressed: () => scanBarcode(),
+                                icon: Icon(
+                                  Icons.qr_code,
+                                  color: activeTheme.primaryColor,
+                                ))
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: icon,
+                                  ),
+                                  Text(controller.text),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
               ),
-            Container(
-              decoration: BoxDecoration(
-                  color: activeTheme.shadowColor,
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              child: enabled
-                  ? Row(
-                      children: [
-                        Flexible(
-                          child: TextField(
-                            decoration:
-                                InputDecoration(border: InputBorder.none),
-                            controller: controller,
-                            onSubmitted: valueChanged,
-                          ),
-                        ),
-                        if (showClearButton)
-                          IconButton(
-                              onPressed: () => clear(),
-                              icon: Icon(
-                                Icons.clear,
-                                color: Colors.red,
-                              )),
-                        if (showBarcodeButton)
-                          IconButton(
-                              onPressed: () => scanBarcode(),
-                              icon: Icon(
-                                Icons.qr_code,
-                                color: activeTheme.primaryColor,
-                              ))
-                      ],
-                    )
-                  : Row(
-                      children: [
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(controller.text),
-                          ),
-                        ),
-                      ],
-                    ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
