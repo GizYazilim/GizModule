@@ -1614,8 +1614,9 @@ class GizDateText extends StatelessWidget {
             dateTime = (await showDatePicker(
                   context: gizContext,
                   initialDate: dateTime,
-                  firstDate: DateTime(DateTime.now().year, 1, 1),
+                  firstDate: DateTime(DateTime.now().year-150, 1, 1),
                   lastDate: DateTime(DateTime.now().year, 12, 31),
+
                 )) ??
                 dateTime;
           } catch (ex) {}
