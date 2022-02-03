@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:giz_module/main.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -74,7 +75,8 @@ abstract class GizStatefulWidget extends StatefulWidget {
   State<StatefulWidget> createState() {
     if (Platform.isAndroid) {
       return state = GizState(
-          (x) => WillPopScope(
+              (x) =>
+              WillPopScope(
                 onWillPop: onBackPressed,
                 child: GestureDetector(
                   onTap: () {
@@ -86,7 +88,8 @@ abstract class GizStatefulWidget extends StatefulWidget {
           initState);
     }
     return state = GizState(
-        (x) => GestureDetector(
+            (x) =>
+            GestureDetector(
               onTap: () {
                 FocusScope.of(gizContext).requestFocus(new FocusNode());
               },
@@ -411,83 +414,82 @@ class GizThemeData {
   bool fixTextFieldOutlineLabel;
   bool useTextSelectionTheme;
 
-  GizThemeData(
-      {this.brightness,
-      this.visualDensity,
-      this.primarySwatch,
-      this.primaryColor,
-      this.primaryColorBrightness,
-      this.primaryColorLight,
-      this.primaryColorDark,
-      this.accentColor,
-      this.accentColorBrightness,
-      this.canvasColor,
-      this.shadowColor,
-      this.scaffoldBackgroundColor,
-      this.bottomAppBarColor,
-      this.cardColor,
-      this.dividerColor,
-      this.focusColor,
-      this.hoverColor,
-      this.highlightColor,
-      this.splashColor,
-      this.splashFactory,
-      this.selectedRowColor,
-      this.unselectedWidgetColor,
-      this.disabledColor,
-      this.buttonColor,
-      this.buttonTheme,
-      this.toggleButtonsTheme,
-      this.secondaryHeaderColor,
-      this.textSelectionColor,
-      this.cursorColor,
-      this.textSelectionHandleColor,
-      this.backgroundColor,
-      this.dialogBackgroundColor,
-      this.indicatorColor,
-      this.hintColor,
-      this.errorColor,
-      this.toggleableActiveColor,
-      this.fontFamily,
-      this.textTheme,
-      this.primaryTextTheme,
-      this.primaryIconTheme,
-      this.accentIconTheme,
-      this.sliderTheme,
-      this.tabBarTheme,
-      this.tooltipTheme,
-      this.cardTheme,
-      this.chipTheme,
-      this.platform,
-      this.materialTapTargetSize,
-      this.applyElevationOverlayColor,
-      this.pageTransitionsTheme,
-      this.appBarTheme,
-      this.scrollbarTheme,
-      this.bottomAppBarTheme,
-      this.colorScheme,
-      this.dialogTheme,
-      this.floatingActionButtonTheme,
-      this.navigationRailTheme,
-      this.typography,
-      this.snackBarTheme,
-      this.bottomSheetTheme,
-      this.popupMenuTheme,
-      this.bannerTheme,
-      this.dividerTheme,
-      this.buttonBarTheme,
-      this.bottomNavigationBarTheme,
-      this.timePickerTheme,
-      this.textButtonTheme,
-      this.elevatedButtonTheme,
-      this.outlinedButtonTheme,
-      this.textSelectionTheme,
-      this.dataTableTheme,
-      this.checkboxTheme,
-      this.radioTheme,
-      this.switchTheme,
-      this.fixTextFieldOutlineLabel,
-      this.useTextSelectionTheme}) {
+  GizThemeData({this.brightness,
+    this.visualDensity,
+    this.primarySwatch,
+    this.primaryColor,
+    this.primaryColorBrightness,
+    this.primaryColorLight,
+    this.primaryColorDark,
+    this.accentColor,
+    this.accentColorBrightness,
+    this.canvasColor,
+    this.shadowColor,
+    this.scaffoldBackgroundColor,
+    this.bottomAppBarColor,
+    this.cardColor,
+    this.dividerColor,
+    this.focusColor,
+    this.hoverColor,
+    this.highlightColor,
+    this.splashColor,
+    this.splashFactory,
+    this.selectedRowColor,
+    this.unselectedWidgetColor,
+    this.disabledColor,
+    this.buttonColor,
+    this.buttonTheme,
+    this.toggleButtonsTheme,
+    this.secondaryHeaderColor,
+    this.textSelectionColor,
+    this.cursorColor,
+    this.textSelectionHandleColor,
+    this.backgroundColor,
+    this.dialogBackgroundColor,
+    this.indicatorColor,
+    this.hintColor,
+    this.errorColor,
+    this.toggleableActiveColor,
+    this.fontFamily,
+    this.textTheme,
+    this.primaryTextTheme,
+    this.primaryIconTheme,
+    this.accentIconTheme,
+    this.sliderTheme,
+    this.tabBarTheme,
+    this.tooltipTheme,
+    this.cardTheme,
+    this.chipTheme,
+    this.platform,
+    this.materialTapTargetSize,
+    this.applyElevationOverlayColor,
+    this.pageTransitionsTheme,
+    this.appBarTheme,
+    this.scrollbarTheme,
+    this.bottomAppBarTheme,
+    this.colorScheme,
+    this.dialogTheme,
+    this.floatingActionButtonTheme,
+    this.navigationRailTheme,
+    this.typography,
+    this.snackBarTheme,
+    this.bottomSheetTheme,
+    this.popupMenuTheme,
+    this.bannerTheme,
+    this.dividerTheme,
+    this.buttonBarTheme,
+    this.bottomNavigationBarTheme,
+    this.timePickerTheme,
+    this.textButtonTheme,
+    this.elevatedButtonTheme,
+    this.outlinedButtonTheme,
+    this.textSelectionTheme,
+    this.dataTableTheme,
+    this.checkboxTheme,
+    this.radioTheme,
+    this.switchTheme,
+    this.fixTextFieldOutlineLabel,
+    this.useTextSelectionTheme}) {
     themeData = ThemeData(
         brightness: brightness,
         primaryColor: primaryColor,
@@ -572,8 +574,7 @@ class GizThemeData {
 
 enum GizTextImageAlign { LEFT, RIGHT }
 
-Widget GizText(
-  String text, {
+Widget GizText(String text, {
   String assetIconName,
   String svgIcon,
   Color textColor = Colors.white,
@@ -696,7 +697,7 @@ Widget GizTextField_1({
           fillColor: Color.fromRGBO(229, 229, 229, 5),
           filled: true,
           labelStyle:
-              TextStyle(fontSize: 12, color: Color.fromRGBO(0, 34, 124, 5))),
+          TextStyle(fontSize: 12, color: Color.fromRGBO(0, 34, 124, 5))),
     ),
   );
 }
@@ -772,9 +773,9 @@ Widget GizTextField({
           prefixIcon: icon == null
               ? null
               : Icon(
-                  icon,
-                  color: iconColor,
-                ),
+            icon,
+            color: iconColor,
+          ),
           fillColor: Color.fromRGBO(31, 64, 128, 5),
           filled: filled,
           labelStyle: TextStyle(fontSize: 12, color: textColor)),
@@ -845,9 +846,9 @@ Widget GizTextField_2({
 class DialogBox {
   static void show(String title,
       {GizDialogButtonType buttonType = GizDialogButtonType.Ok,
-      GizDialogType dialogType = GizDialogType.Info,
-      ValueChanged<GizDialogButtons> buttonClick,
-      BuildContext buildContext}) //asd
+        GizDialogType dialogType = GizDialogType.Info,
+        ValueChanged<GizDialogButtons> buttonClick,
+        BuildContext buildContext}) //asd
   {
     MaterialColor borderColor;
     MaterialColor tintColor;
@@ -880,7 +881,8 @@ class DialogBox {
 
     showDialog(
         context: buildContext,
-        builder: (context) => Center(
+        builder: (context) =>
+            Center(
               child: Wrap(
                 children: [
                   Stack(
@@ -999,9 +1001,10 @@ class DialogBox {
       showDialog(
         barrierDismissible: false,
         context: gizContext,
-        builder: (context) => Center(
-          child: CircularProgressIndicator(),
-        ),
+        builder: (context) =>
+            Center(
+              child: CircularProgressIndicator(),
+            ),
       );
     } catch (Ex) {}
   }
@@ -1066,11 +1069,11 @@ final String svgInfo = '''<?xml version="1.0" encoding="iso-8859-1"?>
 </svg>
 ''';
 final String svgError =
-    '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">    <path d="M 12.355469 3 L 12.785156 19 L 17.199219 19 L 17.644531 3 L 12.355469 3 z M 15.007812 22 C 13.364813 22 12.339844 22.953813 12.339844 24.507812 C 12.339844 26.047813 13.365813 27 15.007812 27 C 16.649812 27 17.662109 26.047812 17.662109 24.507812 C 17.662109 22.953813 16.650813 22 15.007812 22 z"></path></svg>''';
+'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">    <path d="M 12.355469 3 L 12.785156 19 L 17.199219 19 L 17.644531 3 L 12.355469 3 z M 15.007812 22 C 13.364813 22 12.339844 22.953813 12.339844 24.507812 C 12.339844 26.047813 13.365813 27 15.007812 27 C 16.649812 27 17.662109 26.047812 17.662109 24.507812 C 17.662109 22.953813 16.650813 22 15.007812 22 z"></path></svg>''';
 final String svgAsk =
-    '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">    <path d="M 12 2 C 8.691 2 6 4.691 6 8 L 8 8 C 8 5.794 9.794 4 12 4 C 14.206 4 16 5.794 16 8 C 16 9.678 14.963672 10.698859 13.763672 11.880859 C 12.468672 13.155859 11 14.601 11 17 L 13 17 C 13 15.438 14.004016 14.449641 15.166016 13.306641 C 16.495016 11.998641 18 10.516 18 8 C 18 4.691 15.309 2 12 2 z M 11 20 L 11 22 L 13 22 L 13 20 L 11 20 z"></path></svg>''';
+'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">    <path d="M 12 2 C 8.691 2 6 4.691 6 8 L 8 8 C 8 5.794 9.794 4 12 4 C 14.206 4 16 5.794 16 8 C 16 9.678 14.963672 10.698859 13.763672 11.880859 C 12.468672 13.155859 11 14.601 11 17 L 13 17 C 13 15.438 14.004016 14.449641 15.166016 13.306641 C 16.495016 11.998641 18 10.516 18 8 C 18 4.691 15.309 2 12 2 z M 11 20 L 11 22 L 13 22 L 13 20 L 11 20 z"></path></svg>''';
 final String svgCheck =
-    '''<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="405.272px" height="405.272px" viewBox="0 0 405.272 405.272" style="enable-background:new 0 0 405.272 405.272;" xml:space="preserve">
+'''<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="405.272px" height="405.272px" viewBox="0 0 405.272 405.272" style="enable-background:new 0 0 405.272 405.272;" xml:space="preserve">
 <g>
 	<path d="M393.401,124.425L179.603,338.208c-15.832,15.835-41.514,15.835-57.361,0L11.878,227.836   c-15.838-15.835-15.838-41.52,0-57.358c15.841-15.841,41.521-15.841,57.355-0.006l81.698,81.699L336.037,67.064   c15.841-15.841,41.523-15.829,57.358,0C409.23,82.902,409.23,108.578,393.401,124.425z"/>
 </g>
@@ -1119,14 +1122,13 @@ class httpRequest {
   static Function AutohorizationError;
   static Map<String, String> DefaultHeaders = {};
 
-  static Future<http.Response> post(
-    String url,
-    String jsonBody, {
-    int timeout = 5 * 60 * 1000,
-    bool iscontrollresponsecode = true,
-    String token,
-    bool isShowLoading = true,
-  }) async {
+  static Future<http.Response> post(String url,
+      String jsonBody, {
+        int timeout = 5 * 60 * 1000,
+        bool iscontrollresponsecode = true,
+        String token,
+        bool isShowLoading = true,
+      }) async {
     print(jsonBody);
     print(url);
 
@@ -1135,18 +1137,18 @@ class httpRequest {
     if (isShowLoading) DialogBox.showLoading();
     var response = await http
         .post(Uri.parse(url),
-            headers: <String, String>{
-              'Content-Type': 'application/json;charset=UTF-8',
-              "Authorization": "bearer " + token,
-              for (var i in DefaultHeaders.entries.toList()) i.key: i.value
-            },
-            body: jsonBody)
+        headers: <String, String>{
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Authorization": "bearer " + token,
+          for (var i in DefaultHeaders.entries.toList()) i.key: i.value
+        },
+        body: jsonBody)
         .timeout(Duration(milliseconds: timeout));
     if (isShowLoading) DialogBox.close();
     if (iscontrollresponsecode) {
       if ((response.statusCode == 401 ||
-              (response.statusCode == 500 &&
-                  response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
+          (response.statusCode == 500 &&
+              response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
           AutohorizationError != null) {
         AutohorizationError();
       } else if (response.statusCode >= 400) {
@@ -1160,14 +1162,13 @@ class httpRequest {
     return response;
   }
 
-  static Future postSync(
-    String url,
-    String jsonBody,
-    Function(http.Response) res, {
-    int timeout = 5 * 60 * 1000,
-    bool iscontrollresponsecode = true,
-    String token,
-  }) async {
+  static Future postSync(String url,
+      String jsonBody,
+      Function(http.Response) res, {
+        int timeout = 5 * 60 * 1000,
+        bool iscontrollresponsecode = true,
+        String token,
+      }) async {
     print(jsonBody);
 
     res(await post(url, jsonBody,
@@ -1176,13 +1177,12 @@ class httpRequest {
         token: token));
   }
 
-  static Future<http.Response> put(
-    String url,
-    String jsonBody, {
-    int timeout = 5 * 60 * 1000,
-    bool iscontrollresponsecode = true,
-    String token,
-  }) async {
+  static Future<http.Response> put(String url,
+      String jsonBody, {
+        int timeout = 5 * 60 * 1000,
+        bool iscontrollresponsecode = true,
+        String token,
+      }) async {
     print(jsonBody);
 
     print(url);
@@ -1190,18 +1190,18 @@ class httpRequest {
     DialogBox.showLoading();
     var response = await http
         .put(Uri.parse(url),
-            headers: <String, String>{
-              'Content-Type': 'application/json;charset=UTF-8',
-              "Authorization": "bearer " + token,
-              for (var i in DefaultHeaders.entries.toList()) i.key: i.value
-            },
-            body: jsonBody)
+        headers: <String, String>{
+          'Content-Type': 'application/json;charset=UTF-8',
+          "Authorization": "bearer " + token,
+          for (var i in DefaultHeaders.entries.toList()) i.key: i.value
+        },
+        body: jsonBody)
         .timeout(Duration(milliseconds: timeout));
     DialogBox.close();
     if (iscontrollresponsecode) {
       if ((response.statusCode == 401 ||
-              (response.statusCode == 500 &&
-                  response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
+          (response.statusCode == 500 &&
+              response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
           AutohorizationError != null) {
         AutohorizationError();
       }
@@ -1224,22 +1224,20 @@ class httpRequest {
     return response;
   }
 
-  static Future putSync(
-    String url,
-    String jsonBody,
-    Function(http.Response) res, {
-    int timeout = 5 * 60 * 1000,
-    bool iscontrollresponsecode = true,
-    String token,
-  }) async {
+  static Future putSync(String url,
+      String jsonBody,
+      Function(http.Response) res, {
+        int timeout = 5 * 60 * 1000,
+        bool iscontrollresponsecode = true,
+        String token,
+      }) async {
     res(await put(url, jsonBody,
         timeout: timeout,
         iscontrollresponsecode: iscontrollresponsecode,
         token: token));
   }
 
-  static Future<http.Response> get(
-    String url, {
+  static Future<http.Response> get(String url, {
     int Timeout = 5 * 60,
     bool iscontrollresponsecode = true,
     String token,
@@ -1256,8 +1254,8 @@ class httpRequest {
 
       if (iscontrollresponsecode) {
         if ((response.statusCode == 401 ||
-                (response.statusCode == 500 &&
-                    response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
+            (response.statusCode == 500 &&
+                response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
             AutohorizationError != null) {
           AutohorizationError();
         } else if (response.statusCode >= 400 &&
@@ -1280,8 +1278,8 @@ class httpRequest {
 
   static Future getSync(String url, Function(http.Response) res,
       {int timeout = 5 * 60 * 1000,
-      bool iscontrollresponsecode = true,
-      String token}) async {
+        bool iscontrollresponsecode = true,
+        String token}) async {
     res(await get(url,
         Timeout: timeout,
         iscontrollresponsecode: iscontrollresponsecode,
@@ -1317,9 +1315,17 @@ class GizApp extends StatelessWidget {
 }
 
 extension EX_BuildContext on BuildContext {
-  get height => MediaQuery.of(this).size.height;
+  get height =>
+      MediaQuery
+          .of(this)
+          .size
+          .height;
 
-  get width => MediaQuery.of(this).size.width;
+  get width =>
+      MediaQuery
+          .of(this)
+          .size
+          .width;
 
   MediaQueryData get media => MediaQuery.of(this);
 
@@ -1347,12 +1353,12 @@ class GizEditText extends StatelessWidget {
 
   GizEditText(this.controller,
       {this.hint,
-      this.showClearButton = true,
-      this.showBarcodeButton = false,
-      this.enabled = true,
-      this.valueChanged,
-      this.icon,
-      this.textStyle});
+        this.showClearButton = true,
+        this.showBarcodeButton = false,
+        this.enabled = true,
+        this.valueChanged,
+        this.icon,
+        this.textStyle});
 
   ValueNotifier<bool> _listener = ValueNotifier(false);
 
@@ -1398,54 +1404,54 @@ class GizEditText extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(5))),
                 child: enabled
                     ? Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: icon,
-                          ),
-                          Flexible(
-                            child: TextField(
-                              decoration:
-                                  InputDecoration(border: InputBorder.none),
-                              controller: controller,
-                              onSubmitted: valueChanged,
-                              style: textStyle,
-                            ),
-                          ),
-                          if (showClearButton)
-                            IconButton(
-                                onPressed: () => clear(),
-                                icon: Icon(
-                                  Icons.clear,
-                                  color: Colors.red,
-                                )),
-                          if (showBarcodeButton)
-                            IconButton(
-                                onPressed: () => scanBarcode(),
-                                icon: Icon(
-                                  Icons.qr_code,
-                                  color: activeTheme.primaryColor,
-                                ))
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          Flexible(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: icon,
-                                  ),
-                                  Text(controller.text,style: textStyle,),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: icon,
+                    ),
+                    Flexible(
+                      child: TextField(
+                        decoration:
+                        InputDecoration(border: InputBorder.none),
+                        controller: controller,
+                        onSubmitted: valueChanged,
+                        style: textStyle,
                       ),
+                    ),
+                    if (showClearButton)
+                      IconButton(
+                          onPressed: () => clear(),
+                          icon: Icon(
+                            Icons.clear,
+                            color: Colors.red,
+                          )),
+                    if (showBarcodeButton)
+                      IconButton(
+                          onPressed: () => scanBarcode(),
+                          icon: Icon(
+                            Icons.qr_code,
+                            color: activeTheme.primaryColor,
+                          ))
+                  ],
+                )
+                    : Row(
+                  children: [
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: icon,
+                            ),
+                            Text(controller.text, style: textStyle,),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -1486,12 +1492,12 @@ class GizSearchText extends StatelessWidget {
 
   GizSearchText(this.controller,
       {this.hint,
-      this.showClearButton = true,
-      this.showSearchButton = true,
-      this.enabled = true,
-      this.valueChanged,
-      this.onClick,
-      this.textStyle});
+        this.showClearButton = true,
+        this.showSearchButton = true,
+        this.enabled = true,
+        this.valueChanged,
+        this.onClick,
+        this.textStyle});
 
   ValueNotifier<bool> _listener = ValueNotifier(false);
 
@@ -1499,76 +1505,77 @@ class GizSearchText extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: _listener,
-      builder: (context, value, child) => InkWell(
-        onTap: onClick,
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (hint != null)
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    hint,
-                    style: TextStyle(color: activeTheme.primaryColor),
-                  ),
-                ),
-              Container(
-                decoration: BoxDecoration(
-                    color: activeTheme.shadowColor,
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: enabled
-                        ? Row(
-                            children: [
-                              Flexible(
-                                child: Container(
-                                    width: double.maxFinite,
-                                    child: Text(title,style: textStyle,)),
-                              ),
+      builder: (context, value, child) =>
+          InkWell(
+            onTap: onClick,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (hint != null)
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        hint,
+                        style: TextStyle(color: activeTheme.primaryColor),
+                      ),
+                    ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: activeTheme.shadowColor,
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: enabled
+                            ? Row(
+                          children: [
+                            Flexible(
+                              child: Container(
+                                  width: double.maxFinite,
+                                  child: Text(title, style: textStyle,)),
+                            ),
+                            IconButton(
+                                padding: EdgeInsets.all(2),
+                                constraints: BoxConstraints(),
+                                icon: Icon(
+                                  showSearchButton && enabled
+                                      ? Icons.search
+                                      : Icons.search_off,
+                                  color: activeTheme.primaryColor,
+                                )),
+                            if (showClearButton)
                               IconButton(
+                                  onPressed: () {
+                                    controller.value.item = null;
+                                    controller.value.id = null;
+                                    title = "";
+                                    if (valueChanged != null)
+                                      valueChanged(controller.value.item);
+                                  },
                                   padding: EdgeInsets.all(2),
                                   constraints: BoxConstraints(),
                                   icon: Icon(
-                                    showSearchButton && enabled
-                                        ? Icons.search
-                                        : Icons.search_off,
-                                    color: activeTheme.primaryColor,
+                                    Icons.clear,
+                                    color: Colors.red,
                                   )),
-                              if (showClearButton)
-                                IconButton(
-                                    onPressed: () {
-                                      controller.value.item = null;
-                                      controller.value.id = null;
-                                      title = "";
-                                      if (valueChanged != null)
-                                        valueChanged(controller.value.item);
-                                    },
-                                    padding: EdgeInsets.all(2),
-                                    constraints: BoxConstraints(),
-                                    icon: Icon(
-                                      Icons.clear,
-                                      color: Colors.red,
-                                    )),
-                            ],
-                          )
-                        : Row(
-                            children: [
-                              Flexible(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("",style: textStyle),
-                                ),
+                          ],
+                        )
+                            : Row(
+                          children: [
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("", style: textStyle),
                               ),
-                            ],
-                          )),
+                            ),
+                          ],
+                        )),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 }
@@ -1585,22 +1592,41 @@ class GizDateText extends StatelessWidget {
   bool enabled;
   ValueChanged<dynamic> valueChanged;
   TextStyle textStyle;
+
   DateTime get dateTime => controller.value;
+  DateTime firstDate = DateTime(DateTime
+      .now()
+      .year - 150, 1, 1);
+  DateTime lastDate = DateTime(DateTime
+      .now()
+      .year, 12, 31);
 
   set dateTime(DateTime dateTime) {
     controller.value = dateTime;
     _listener.value = !_listener.value;
   }
 
-  GizDateText(
-    this.controller, {
+  GizDateText(this.controller, {
     this.hint,
     this.showClearButton = true,
     this.showSearchButton = true,
     this.enabled = true,
     this.valueChanged,
-        this.textStyle
-  });
+    this.textStyle,
+    this.firstDate,
+    this.lastDate
+  }) {
+    if (firstDate == null)
+      firstDate = DateTime(DateTime
+          .now()
+          .year - 150, 1, 1);
+    if (lastDate == null)
+      lastDate = DateTime(DateTime
+          .now()
+          .year, 12, 31);
+  }
+
+
 
   ValueNotifier<bool> _listener = ValueNotifier(false);
 
@@ -1608,72 +1634,74 @@ class GizDateText extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: _listener,
-      builder: (context, value, child) => InkWell(
-        onTap: () async {
-          try {
-            dateTime = (await showDatePicker(
+      builder: (context, value, child) =>
+          InkWell(
+            onTap: () async {
+              try {
+                dateTime = (await showDatePicker(
                   context: gizContext,
                   initialDate: dateTime,
-                  firstDate: DateTime(DateTime.now().year-150, 1, 1),
-                  lastDate: DateTime(DateTime.now().year, 12, 31),
+                  firstDate: firstDate,
+                  lastDate: lastDate,
 
                 )) ??
-                dateTime;
-          } catch (ex) {}
-          //
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (hint != null)
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    hint,
-                    style: TextStyle(color: activeTheme.primaryColor),
+                    dateTime;
+              } catch (ex) {}
+              //
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (hint != null)
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        hint,
+                        style: TextStyle(color: activeTheme.primaryColor),
+                      ),
+                    ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: activeTheme.shadowColor,
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: enabled
+                            ? Row(
+                          children: [
+                            Flexible(
+                              child: Container(
+                                  width: double.maxFinite,
+                                  child: Text(controller?.value.toFormat(),
+                                      style: textStyle)),
+                            ),
+                            IconButton(
+                                onPressed: () {},
+                                padding: EdgeInsets.all(2),
+                                constraints: BoxConstraints(),
+                                icon: Icon(
+                                  Icons.date_range,
+                                  color: Colors.red,
+                                )),
+                          ],
+                        )
+                            : Row(
+                          children: [
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(controller?.value.toFormat()),
+                              ),
+                            ),
+                          ],
+                        )),
                   ),
-                ),
-              Container(
-                decoration: BoxDecoration(
-                    color: activeTheme.shadowColor,
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: enabled
-                        ? Row(
-                            children: [
-                              Flexible(
-                                child: Container(
-                                    width: double.maxFinite,
-                                    child: Text(controller?.value.toFormat(),style: textStyle)),
-                              ),
-                              IconButton(
-                                  onPressed: () {},
-                                  padding: EdgeInsets.all(2),
-                                  constraints: BoxConstraints(),
-                                  icon: Icon(
-                                    Icons.date_range,
-                                    color: Colors.red,
-                                  )),
-                            ],
-                          )
-                        : Row(
-                            children: [
-                              Flexible(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(controller?.value.toFormat()),
-                                ),
-                              ),
-                            ],
-                          )),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 }
@@ -1693,14 +1721,13 @@ class GizSwitch extends StatelessWidget {
   ValueChanged<bool> valueChanged;
   TextStyle textStyle;
 
-  GizSwitch(
-      {this.value = false,
-      this.hint,
-      this.showClearButton = true,
-      this.showBarcodeButton = false,
-      this.enabled = true,
-      this.valueChanged,
-      this.textStyle}) {
+  GizSwitch({this.value = false,
+    this.hint,
+    this.showClearButton = true,
+    this.showBarcodeButton = false,
+    this.enabled = true,
+    this.valueChanged,
+    this.textStyle}) {
     // key = GlobalKey();
   }
 
@@ -1710,19 +1737,20 @@ class GizSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
       valueListenable: _listener,
-      builder: (context, value, child) => Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: SwitchListTile(
-          tileColor: HexColor.fromHex("#edebeb"),
-          title: Text(hint, style: textStyle,),
-          value: this.value,
-          onChanged: (value) {
-            this.value = value;
-            if (valueChanged != null) valueChanged(this.value);
-            _listener.value = !_listener.value;
-          },
-        ),
-      ),
+      builder: (context, value, child) =>
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: SwitchListTile(
+              tileColor: currentTheme.shadowColor,
+              title: Text(hint, style: textStyle,),
+              value: this.value,
+              onChanged: (value) {
+                this.value = value;
+                if (valueChanged != null) valueChanged(this.value);
+                _listener.value = !_listener.value;
+              },
+            ),
+          ),
     );
   }
 }
@@ -1743,17 +1771,16 @@ class GizDropdown<T> extends StatefulWidget {
 
   final bool leadingIcon;
 
-  GizDropdown(
-      {Key key,
-      this.hideIcon = false,
-      @required this.child,
-      @required this.items,
-      this.dropdownStyle = const GizDropdownStyle(),
-      this.dropdownButtonStyle = const GizDropdownButtonStyle(),
-      this.icon,
-      this.leadingIcon = false,
-      this.onChange,
-      this.hint})
+  GizDropdown({Key key,
+    this.hideIcon = false,
+    @required this.child,
+    @required this.items,
+    this.dropdownStyle = const GizDropdownStyle(),
+    this.dropdownButtonStyle = const GizDropdownButtonStyle(),
+    this.icon,
+    this.leadingIcon = false,
+    this.onChange,
+    this.hint})
       : super(key: key);
 
   @override
@@ -1819,16 +1846,17 @@ class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
                     if (_currentIndex == -1) ...[
                       Expanded(
                           child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: widget.child,
-                      )),
-                    ] else ...[
-                      Expanded(
-                          child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: widget.items[_currentIndex],
-                      )),
-                    ],
+                            padding: const EdgeInsets.all(4.0),
+                            child: widget.child,
+                          )),
+                    ] else
+                      ...[
+                        Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: widget.items[_currentIndex],
+                            )),
+                      ],
                     if (!widget.hideIcon)
                       RotationTransition(
                         turns: _rotateAnimation,
@@ -1854,63 +1882,76 @@ class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
     return OverlayEntry(
       // full screen GestureDetector to register when a
       // user has clicked away from the dropdown
-      builder: (context) => GestureDetector(
-        onTap: () => _toggleDropdown(close: true),
-        behavior: HitTestBehavior.translucent,
-        // full screen container to register taps anywhere and close drop down
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Stack(
-            children: [
-              Positioned(
-                left: offset.dx,
-                top: topOffset,
-                width: widget.dropdownStyle.width ?? size.width,
-                child: CompositedTransformFollower(
-                  offset:
+      builder: (context) =>
+          GestureDetector(
+            onTap: () => _toggleDropdown(close: true),
+            behavior: HitTestBehavior.translucent,
+            // full screen container to register taps anywhere and close drop down
+            child: Container(
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              child: Stack(
+                children: [
+                  Positioned(
+                    left: offset.dx,
+                    top: topOffset,
+                    width: widget.dropdownStyle.width ?? size.width,
+                    child: CompositedTransformFollower(
+                      offset:
                       widget.dropdownStyle.offset ?? Offset(0, size.height + 5),
-                  link: this._layerLink,
-                  showWhenUnlinked: false,
-                  child: Material(
-                    elevation: widget.dropdownStyle.elevation ?? 0,
-                    borderRadius:
+                      link: this._layerLink,
+                      showWhenUnlinked: false,
+                      child: Material(
+                        elevation: widget.dropdownStyle.elevation ?? 0,
+                        borderRadius:
                         widget.dropdownStyle.borderRadius ?? BorderRadius.zero,
-                    color: widget.dropdownStyle.color,
-                    child: SizeTransition(
-                      axisAlignment: 1,
-                      sizeFactor: _expandAnimation,
-                      child: ConstrainedBox(
-                        constraints: widget.dropdownStyle.constraints ??
-                            BoxConstraints(
-                              maxHeight: MediaQuery.of(context).size.height -
-                                  topOffset -
-                                  15,
-                            ),
-                        child: ListView(
-                          padding:
+                        color: widget.dropdownStyle.color,
+                        child: SizeTransition(
+                          axisAlignment: 1,
+                          sizeFactor: _expandAnimation,
+                          child: ConstrainedBox(
+                            constraints: widget.dropdownStyle.constraints ??
+                                BoxConstraints(
+                                  maxHeight: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height -
+                                      topOffset -
+                                      15,
+                                ),
+                            child: ListView(
+                              padding:
                               widget.dropdownStyle.padding ?? EdgeInsets.zero,
-                          shrinkWrap: true,
-                          children: widget.items.asMap().entries.map((item) {
-                            return InkWell(
-                              onTap: () {
-                                setState(() => _currentIndex = item.key);
-                                widget.onChange(item.value.value, item.key);
-                                _toggleDropdown();
-                              },
-                              child: item.value,
-                            );
-                          }).toList(),
+                              shrinkWrap: true,
+                              children: widget.items
+                                  .asMap()
+                                  .entries
+                                  .map((item) {
+                                return InkWell(
+                                  onTap: () {
+                                    setState(() => _currentIndex = item.key);
+                                    widget.onChange(item.value.value, item.key);
+                                    _toggleDropdown();
+                                  },
+                                  child: item.value,
+                                );
+                              }).toList(),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
     );
   }
 
