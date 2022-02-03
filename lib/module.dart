@@ -1315,6 +1315,23 @@ class GizApp extends StatelessWidget {
     );
   }
 }
+
+extension EX_BuildContext on BuildContext {
+  get height => MediaQuery.of(this).size.height;
+
+  get width => MediaQuery.of(this).size.width;
+
+  MediaQueryData get media => MediaQuery.of(this);
+
+  get isLarge => this.height > 800;
+
+  get isKeyBoardOpen => WidgetsBinding.instance.window.viewInsets.bottom > 0;
+}
+
+extension EX_Int on int {
+  get sp => this * (1.0 / gizContext.media.textScaleFactor);
+}
+
 //endregion
 
 class GizEditText extends StatelessWidget {
