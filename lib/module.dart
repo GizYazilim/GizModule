@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:giz_module/main.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -1741,7 +1740,7 @@ class GizSwitch extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: SwitchListTile(
-              tileColor: currentTheme.shadowColor,
+              tileColor: activeTheme.shadowColor,
               title: Text(hint, style: textStyle,),
               value: this.value,
               onChanged: (value) {
