@@ -5,7 +5,7 @@ import 'package:giz_module/module.dart';
 
 class GizAddressWidget extends GizStateLessWidget {
   ValueNotifier<GizAddress> __GizAddress =
-      new ValueNotifier<GizAddress>(GizAddress());
+  new ValueNotifier<GizAddress>(GizAddress());
 
   bool showSwichBar = true;
   bool showAddressTile = true;
@@ -23,12 +23,12 @@ class GizAddressWidget extends GizStateLessWidget {
 
   GizAddressWidget(
       {this.showSwichBar = true,
-      this.showAddressTile = true,
-      this.shadowColor,
-      this.countryGetter,
-      this.cityGetter,
-      this.townGetter,
-      this.districtGetter});
+        this.showAddressTile = true,
+        this.shadowColor,
+        this.countryGetter,
+        this.cityGetter,
+        this.townGetter,
+        this.districtGetter});
 
   GizEditText txtAddressName = GizEditText(TextEditingController());
   GizEditText txtCustomerName = GizEditText(TextEditingController());
@@ -67,12 +67,12 @@ class GizAddressWidget extends GizStateLessWidget {
                           fit: FlexFit.tight,
                           child: Container(
                               child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Text(
-                              "Bireysel",
-                              textAlign: TextAlign.center,
-                            ),
-                          ))),
+                                padding: const EdgeInsets.all(15.0),
+                                child: Text(
+                                  "Bireysel",
+                                  textAlign: TextAlign.center,
+                                ),
+                              ))),
                       Flexible(
                           flex: 1,
                           fit: FlexFit.tight,
@@ -331,7 +331,8 @@ class GizAddressWidget extends GizStateLessWidget {
             break;
           case "city":
             title = "Şehirler";
-            if (countryGetter != null) items = countryGetter();
+            if (cityGetter != null) items = cityGetter();
+            print(items);
             break;
           case "town":
             title = "İlçeler";
@@ -342,13 +343,14 @@ class GizAddressWidget extends GizStateLessWidget {
             if (districtGetter != null) items = districtGetter();
             break;
         }
+        print("asdasd");
 
-        return SingleChildScrollView(
-          child: Container(
-            height: gizContext.height * 0.75,
-            width: gizContext.width,
-            color: shadowColor ?? activeTheme.shadowColor,
-            child: Column(
+        return Container(
+          constraints: BoxConstraints(maxHeight: gizContext.height, minHeight: gizContext.height),
+          height: gizContext.height ,
+          width: gizContext.width,
+          color: shadowColor ?? activeTheme.shadowColor,
+          child: ListView(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(15),
@@ -361,7 +363,7 @@ class GizAddressWidget extends GizStateLessWidget {
                 for (int i = 0; i < items.length; i++)
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                    const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                     child: InkWell(
                       onTap: () {
                         switch (sheetType) {
@@ -411,8 +413,7 @@ class GizAddressWidget extends GizStateLessWidget {
                       ),
                     ),
                   )
-              ],
-            ),
+              ]
           ),
         );
       },
@@ -424,25 +425,25 @@ class GizAddressWidget extends GizStateLessWidget {
 class GizAddress {
   GizAddress(
       {this.addressName = "",
-      this.customerName = "",
-      this.customerSurName = "",
-      this.countryId = "",
-      this.countryName = "",
-      this.cityId = "",
-      this.cityName = "",
-      this.townId = "",
-      this.townName = "",
-      this.address = "",
-      this.postCode = "",
-      this.taxNumber = "",
-      this.taxOffice = "",
-      this.mobilePhone = "",
-      this.fax = "",
-      this.email = "",
-      this.companyName = "",
-      this.addressType = "",
-      this.districtId,
-      this.districtName});
+        this.customerName = "",
+        this.customerSurName = "",
+        this.countryId = "",
+        this.countryName = "",
+        this.cityId = "",
+        this.cityName = "",
+        this.townId = "",
+        this.townName = "",
+        this.address = "",
+        this.postCode = "",
+        this.taxNumber = "",
+        this.taxOffice = "",
+        this.mobilePhone = "",
+        this.fax = "",
+        this.email = "",
+        this.companyName = "",
+        this.addressType = "",
+        this.districtId,
+        this.districtName});
 
   String addressName;
   String customerName;
@@ -494,31 +495,32 @@ class GizAddress {
   }
 
   String toJson() => jsonEncode({
-        "CustomerName": customerName,
-        "CustomerSurName": customerSurName,
-        "CountryID": countryId,
-        "CountryName": countryName,
-        "CityID": cityId,
-        "CityName": cityName,
-        "TownID": townId,
-        "TownName": townName,
-        "Address": address,
-        "PostCode": postCode,
-        "TaxNumber": taxNumber,
-        "TaxOffice": taxOffice,
-        "MobilePhone": mobilePhone,
-        "Fax": fax,
-        "Email": email,
-        "CompanyName": companyName,
-        "AddressType": addressType,
-        "DistrictID": districtId,
-        "DistrictName": districtName
-      });
+    "CustomerName": customerName,
+    "CustomerSurName": customerSurName,
+    "CountryID": countryId,
+    "CountryName": countryName,
+    "CityID": cityId,
+    "CityName": cityName,
+    "TownID": townId,
+    "TownName": townName,
+    "Address": address,
+    "PostCode": postCode,
+    "TaxNumber": taxNumber,
+    "TaxOffice": taxOffice,
+    "MobilePhone": mobilePhone,
+    "Fax": fax,
+    "Email": email,
+    "CompanyName": companyName,
+    "AddressType": addressType,
+    "DistrictID": districtId,
+    "DistrictName": districtName
+  });
 }
 
 class KeyValuePair<T, E> {
   T key;
   E value;
+  dynamic data;
 
-  KeyValuePair(this.key, this.value);
+  KeyValuePair(this.key, this.value,this.data);
 }
