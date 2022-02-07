@@ -54,6 +54,62 @@ BuildContext get gizContext => navigatorKey.currentContext;
 
 typedef WidgetGetter<T> = T Function(GizState state);
 
+
+abstract class GizStateLessWidget extends StatelessWidget {
+
+  ValueNotifier<bool> __GizStateLessWidget =  ValueNotifier(false);
+  Widget buildWidget(BuildContext context);
+  BuildContext buildContext;
+  bool isFirstState = true;
+
+
+  void setState(VoidCallback fn) {
+    try {
+      __GizStateLessWidget.value =!__GizStateLessWidget.value;
+    } catch (ex) {
+      print("State Exception -------------------" + ex.toString());
+    }
+    fn();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    buildContext = context;
+    Widget widget = ValueListenableBuilder(valueListenable: __GizStateLessWidget, builder: (context, value, child) {
+      if (Platform.isAndroid) {
+        return  WillPopScope(
+          onWillPop: onBackPressed,
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(gizContext).requestFocus(new FocusNode());
+            },
+            child: buildWidget(context),
+          ),
+        );
+      }
+
+      return GestureDetector(
+        onTap: () {
+          FocusScope.of(gizContext).requestFocus(new FocusNode());
+        },
+        child: buildWidget(context),
+      );
+    },);
+
+    isFirstState = false;
+
+    return widget;
+
+
+
+  }
+
+  Future<bool> onBackPressed() async {
+    return true;
+  }
+}
+
+
 abstract class GizStatefulWidget extends StatefulWidget {
   Widget buildWidget(GizState state);
 
@@ -1349,19 +1405,20 @@ class GizWidgetBorder extends StatelessWidget {
   bool isHintInclude;
   Color shadowColor;
   Color hintColor;
-
+  GestureTapCallback onTap;
   GizWidgetBorder(
       {this.icon,
       this.hint,
       this.showBarcodeButton = false,
       this.showClearButton = false,
       this.child,
-      this.isFiilSolid = false,
-      this.isHintInclude = true,
+      this.isFiilSolid = true,
+      this.isHintInclude = false,
       this.onClear,
       this.onScanBarcode,
       this.shadowColor,
-      this.hintColor});
+      this.hintColor,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -1391,48 +1448,51 @@ class GizWidgetBorder extends StatelessWidget {
                       TextStyle(color: hintColor ?? activeTheme.primaryColor),
                 ),
               ),
-            Container(
-                constraints: BoxConstraints(minHeight: 45),
-                decoration: isHintInclude
-                    ? null
-                    : BoxDecoration(
-                        color: isFiilSolid
-                            ? shadowColor ?? activeTheme.shadowColor
-                            : Colors.transparent,
-                        border: !isFiilSolid
-                            ? Border.all(
-                                color: shadowColor ?? activeTheme.shadowColor,
-                                width: 2)
-                            : null,
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: icon,
-                    ),
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: child ?? Container(),
-                    ),
-                    if (showClearButton)
-                      IconButton(
-                          onPressed: () => onClear(),
-                          icon: Icon(
-                            Icons.clear,
-                            color: Colors.red,
-                          )),
-                    if (showBarcodeButton)
-                      IconButton(
-                          onPressed: () => onScanBarcode(),
-                          icon: Icon(
-                            Icons.qr_code,
-                            color: activeTheme.primaryColor,
-                          ))
-                  ],
-                )),
+            InkWell(
+              onTap: onTap,
+              child: Container(
+                  constraints: BoxConstraints(minHeight: 45),
+                  decoration: isHintInclude
+                      ? null
+                      : BoxDecoration(
+                          color: isFiilSolid
+                              ? shadowColor ?? activeTheme.shadowColor
+                              : Colors.transparent,
+                          border: !isFiilSolid
+                              ? Border.all(
+                                  color: shadowColor ?? activeTheme.shadowColor,
+                                  width: 2)
+                              : null,
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: icon,
+                      ),
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: child ?? Container(),
+                      ),
+                      if (showClearButton)
+                        IconButton(
+                            onPressed: () => onClear(),
+                            icon: Icon(
+                              Icons.clear,
+                              color: Colors.red,
+                            )),
+                      if (showBarcodeButton)
+                        IconButton(
+                            onPressed: () => onScanBarcode(),
+                            icon: Icon(
+                              Icons.qr_code,
+                              color: activeTheme.primaryColor,
+                            ))
+                    ],
+                  )),
+            ),
           ],
         ),
       ),
