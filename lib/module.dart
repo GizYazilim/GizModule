@@ -1348,6 +1348,7 @@ class GizWidgetBorder extends StatelessWidget {
   bool isFiilSolid;
   bool isHintInclude;
   Color shadowColor;
+  Color hintColor;
 
   GizWidgetBorder(
       {this.icon,
@@ -1359,7 +1360,8 @@ class GizWidgetBorder extends StatelessWidget {
       this.isHintInclude = true,
       this.onClear,
       this.onScanBarcode,
-      this.shadowColor});
+      this.shadowColor,
+      this.hintColor});
 
   @override
   Widget build(BuildContext context) {
@@ -1386,7 +1388,7 @@ class GizWidgetBorder extends StatelessWidget {
                 child: Text(
                   hint,
                   style:
-                      TextStyle(color: shadowColor ?? activeTheme.primaryColor),
+                      TextStyle(color: hintColor ?? activeTheme.primaryColor),
                 ),
               ),
             Container(
@@ -1452,6 +1454,8 @@ class GizEditText extends StatelessWidget {
   bool isFiilSolid;
   bool isHintInclude;
   Color shadowColor;
+  Color hintColor;
+
   List<TextInputFormatter> formatters;
 
   GizEditText(this.controller,
@@ -1465,7 +1469,8 @@ class GizEditText extends StatelessWidget {
       this.isFiilSolid = true,
       this.isHintInclude = false,
       this.shadowColor,
-      this.formatters});
+      this.formatters,
+      this.hintColor});
 
   ValueNotifier<bool> _listener = ValueNotifier(false);
 
@@ -1495,6 +1500,7 @@ class GizEditText extends StatelessWidget {
         return GizWidgetBorder(
           hint: hint,
           icon: icon,
+          hintColor: hintColor,
           showClearButton: enabled && showClearButton,
           showBarcodeButton: enabled && showBarcodeButton,
           onClear: () => clear(),
@@ -1548,6 +1554,8 @@ class GizSearchText extends StatelessWidget {
   bool isFiilSolid;
   bool isHintInclude;
   Color shadowColor;
+  Color hintColor;
+
 
   String get title => controller.value.title;
 
@@ -1567,7 +1575,8 @@ class GizSearchText extends StatelessWidget {
       this.icon,
       this.isFiilSolid = true,
       this.isHintInclude = false,
-      this.shadowColor}) {
+      this.shadowColor,
+      this.hintColor}) {
     if (icon == null) icon = Icon(Icons.search);
   }
 
@@ -1582,6 +1591,7 @@ class GizSearchText extends StatelessWidget {
         child: GizWidgetBorder(
             hint: hint,
             icon: icon,
+            hintColor: hintColor,
             showClearButton: enabled && showClearButton,
             showBarcodeButton: false,
             isFiilSolid: isFiilSolid,
@@ -1618,6 +1628,7 @@ class GizDateText extends StatelessWidget {
   bool isFiilSolid;
   bool isHintInclude;
   Color shadowColor;
+  Color hintColor;
 
   GizDateText(this.controller,
       {this.hint,
@@ -1630,7 +1641,8 @@ class GizDateText extends StatelessWidget {
       this.lastDate,
       this.isFiilSolid = true,
       this.isHintInclude = false,
-      this.shadowColor}) {
+      this.shadowColor,
+      this.hintColor}) {
     if (firstDate == null)
       firstDate = DateTime(DateTime.now().year - 150, 1, 1);
     if (lastDate == null) lastDate = DateTime(DateTime.now().year, 12, 31);
@@ -1656,6 +1668,7 @@ class GizDateText extends StatelessWidget {
           //
         },
         child: GizWidgetBorder(
+          hintColor: hintColor,
           hint: hint,
           showClearButton: enabled && showClearButton,
           showBarcodeButton: false,
@@ -1711,6 +1724,7 @@ class GizSwitch extends StatelessWidget {
   bool enabled;
   ValueChanged<bool> valueChanged;
   TextStyle textStyle;
+  Color hintColor;
 
   Icon icon;
   bool isFiilSolid;
@@ -1729,6 +1743,7 @@ class GizSwitch extends StatelessWidget {
     this.isFiilSolid = true,
     this.icon,
     this.shadowColor,
+    this.hintColor
   }) {
     // key = GlobalKey();
   }
@@ -1741,6 +1756,7 @@ class GizSwitch extends StatelessWidget {
       valueListenable: _listener,
       builder: (context, value, child) => GizWidgetBorder(
         icon: icon,
+        hintColor: hintColor,
         showClearButton: false,
         showBarcodeButton: false,
         isFiilSolid: isFiilSolid,
@@ -1812,6 +1828,7 @@ class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
   AnimationController _animationController;
   Animation<double> _expandAnimation;
   Animation<double> _rotateAnimation;
+  Color hintColor;
 
   @override
   void initState() {
@@ -1841,6 +1858,7 @@ class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
         isFiilSolid: widget.isFiilSolid,
         isHintInclude: widget.isHintInclude,
         shadowColor: widget.shadowColor,
+        hintColor: hintColor,
         child: InkWell(
           onTap: _toggleDropdown,
           child: Row(
