@@ -1439,6 +1439,7 @@ class GizWidgetBorder extends StatelessWidget {
 }
 
 class GizEditText extends StatelessWidget {
+
   TextEditingController controller;
   String hint;
   bool showClearButton;
@@ -1451,6 +1452,7 @@ class GizEditText extends StatelessWidget {
   bool isFiilSolid;
   bool isHintInclude;
   Color shadowColor;
+  List<TextInputFormatter> formatters;
 
   GizEditText(this.controller,
       {this.hint,
@@ -1462,7 +1464,8 @@ class GizEditText extends StatelessWidget {
       this.textStyle,
       this.isFiilSolid = true,
       this.isHintInclude = false,
-      this.shadowColor});
+      this.shadowColor,
+      this.formatters});
 
   ValueNotifier<bool> _listener = ValueNotifier(false);
 
@@ -1505,6 +1508,7 @@ class GizEditText extends StatelessWidget {
                   controller: controller,
                   onSubmitted: valueChanged,
                   style: textStyle,
+                  inputFormatters: formatters,
                 )
               : Text(
                   controller.text,
@@ -1515,6 +1519,8 @@ class GizEditText extends StatelessWidget {
     );
   }
 }
+
+
 
 //region SearchText
 
@@ -1856,7 +1862,7 @@ class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
               if (!widget.hideIcon)
                 RotationTransition(
                   turns: _rotateAnimation,
-                  child: widget.icon ?? Icon(Icons.arrow_drop_down),
+                  child:  Icon(Icons.arrow_drop_down),
                 ),
             ],
           ),
