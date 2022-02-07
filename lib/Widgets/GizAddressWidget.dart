@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:giz_module/main.dart';
 import 'package:giz_module/module.dart';
 
 class GizAddressWidget extends GizStateLessWidget {
@@ -42,7 +41,7 @@ class GizAddressWidget extends GizStateLessWidget {
 
   @override
   Widget buildWidget(BuildContext context) {
-    shadowColor = shadowColor ?? currentTheme.shadowColor;
+    shadowColor = shadowColor ?? activeTheme.shadowColor;
     print("ValueListenableBuilder");
     return ValueListenableBuilder<GizAddress>(
         valueListenable: __GizAddress,
@@ -348,7 +347,7 @@ class GizAddressWidget extends GizStateLessWidget {
           child: Container(
             height: gizContext.height * 0.75,
             width: gizContext.width,
-            color: shadowColor ?? currentTheme.shadowColor,
+            color: shadowColor ?? activeTheme.shadowColor,
             child: Column(
               children: [
                 Padding(
