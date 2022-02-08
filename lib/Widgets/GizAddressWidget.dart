@@ -8,6 +8,7 @@ class GizAddressWidget extends GizStateLessWidget {
       new ValueNotifier<GizAddress>(GizAddress());
 
   GizAddress get address => __GizAddress.value;
+  set address(GizAddress vale) => __GizAddress.value = vale;
   bool get isKurumsal => !showSwichBar || AddressType == "Kurumsal";
 
   String AddressType = "Bireysel";
