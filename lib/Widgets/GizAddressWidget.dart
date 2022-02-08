@@ -8,7 +8,9 @@ class GizAddressWidget extends GizStateLessWidget {
       new ValueNotifier<GizAddress>(GizAddress());
 
   GizAddress get address => __GizAddress.value;
+
   set address(GizAddress vale) => __GizAddress.value = vale;
+
   bool get isKurumsal => !showSwichBar || AddressType == "Kurumsal";
 
   String AddressType = "Bireysel";
@@ -22,10 +24,14 @@ class GizAddressWidget extends GizStateLessWidget {
   ValueNotifier<KeyValuePair<String, String>> town = ValueNotifier(null);
   ValueNotifier<KeyValuePair<String, String>> district = ValueNotifier(null);
 
-  GizValueGetter<List<KeyValuePair<String, String>>,GizAddressWidget> countryGetter;
-  GizValueGetter<List<KeyValuePair<String, String>>,GizAddressWidget> cityGetter;
-  GizValueGetter<List<KeyValuePair<String, String>>,GizAddressWidget> townGetter;
-  GizValueGetter<List<KeyValuePair<String, String>>,GizAddressWidget> districtGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget>
+      countryGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget>
+      cityGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget>
+      townGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget>
+      districtGetter;
 
   GizAddressWidget(
       {this.showSwichBar = true,
@@ -324,8 +330,11 @@ class GizAddressWidget extends GizStateLessWidget {
                   shadowColor: shadowColor,
                   valueChanged: (value) => addres.address = value,
                 ),
-                if(onSave != null)
-                FlatButton( color: shadowColor,onPressed: () => onSave(addres), child: Text("Bilgileri Kaydet"))
+                if (onSave != null)
+                  FlatButton(
+                      color: shadowColor,
+                      onPressed: () => onSave(addres),
+                      child: Text("Bilgileri Kaydet"))
               ],
             ),
           );
@@ -453,7 +462,8 @@ class GizAddressWidget extends GizStateLessWidget {
 
 class GizAddress {
   GizAddress(
-      {this.addressName = "",
+      {this.addressID,
+      this.addressName = "",
       this.customerName = "",
       this.customerSurName = "",
       this.countryId = "",
@@ -474,6 +484,7 @@ class GizAddress {
       this.districtId,
       this.districtName});
 
+  int addressID;
   String addressName;
   String customerName;
   String customerSurName;
@@ -501,6 +512,7 @@ class GizAddress {
   factory GizAddress.fromJson(String jsonString) {
     var json = jsonDecode(jsonString);
     return GizAddress(
+        addressID: json["AddressID"] ?? 0,
         addressName: json["AddressName"] ?? "",
         customerName: json["CustomerName"] ?? "",
         customerSurName: json["CustomerSurName"] ?? "",
@@ -524,6 +536,7 @@ class GizAddress {
   }
 
   String toJson() => jsonEncode({
+        "AddressID": addressID,
         "CustomerName": customerName,
         "CustomerSurName": customerSurName,
         "CountryID": countryId,
