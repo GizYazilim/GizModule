@@ -21,10 +21,10 @@ class GizAddressWidget extends GizStateLessWidget {
   ValueNotifier<KeyValuePair<String, String>> town = ValueNotifier(null);
   ValueNotifier<KeyValuePair<String, String>> district = ValueNotifier(null);
 
-  ValueGetter<List<KeyValuePair<String, String>>> countryGetter;
-  ValueGetter<List<KeyValuePair<String, String>>> cityGetter;
-  ValueGetter<List<KeyValuePair<String, String>>> townGetter;
-  ValueGetter<List<KeyValuePair<String, String>>> districtGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>,GizAddressWidget> countryGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>,GizAddressWidget> cityGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>,GizAddressWidget> townGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>,GizAddressWidget> districtGetter;
 
   GizAddressWidget(
       {this.showSwichBar = true,
@@ -358,20 +358,20 @@ class GizAddressWidget extends GizStateLessWidget {
         switch (sheetType) {
           case "country":
             title = "Ülkeler";
-            if (countryGetter != null) items = countryGetter();
+            if (countryGetter != null) items = countryGetter(this);
             break;
           case "city":
             title = "Şehirler";
-            if (cityGetter != null) items = cityGetter();
+            if (cityGetter != null) items = cityGetter(this);
             print(items);
             break;
           case "town":
             title = "İlçeler";
-            if (townGetter != null) items = townGetter();
+            if (townGetter != null) items = townGetter(this);
             break;
           case "district":
             title = "Semtler";
-            if (districtGetter != null) items = districtGetter();
+            if (districtGetter != null) items = districtGetter(this);
             break;
         }
         print("asdasd");

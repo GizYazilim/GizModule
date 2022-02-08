@@ -2091,3 +2091,5 @@ class GizDropdownStyle {
     this.borderRadius,
   });
 }
+
+typedef GizValueGetter<T,E> = T Function(E item);
