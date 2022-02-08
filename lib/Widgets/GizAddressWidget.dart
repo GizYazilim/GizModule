@@ -555,7 +555,8 @@ class GizAddress {
         "CompanyName": companyName,
         "AddressType": addressType,
         "DistrictID": districtId,
-        "DistrictName": districtName
+        "DistrictName": districtName,
+    "AddressName":addressName
       });
 }
 
