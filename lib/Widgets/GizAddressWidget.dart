@@ -5,11 +5,16 @@ import 'package:giz_module/module.dart';
 
 class GizAddressWidget extends GizStateLessWidget {
   ValueNotifier<GizAddress> __GizAddress =
-  new ValueNotifier<GizAddress>(GizAddress());
+      new ValueNotifier<GizAddress>(GizAddress());
 
+  GizAddress get address => __GizAddress.value;
+  bool get isKurumsal => !showSwichBar || AddressType == "Kurumsal";
+
+  String AddressType = "Bireysel";
   bool showSwichBar = true;
   bool showAddressTile = true;
   Color shadowColor;
+  ValueChanged<GizAddress> onSave;
 
   ValueNotifier<KeyValuePair<String, String>> country = ValueNotifier(null);
   ValueNotifier<KeyValuePair<String, String>> city = ValueNotifier(null);
@@ -23,12 +28,13 @@ class GizAddressWidget extends GizStateLessWidget {
 
   GizAddressWidget(
       {this.showSwichBar = true,
-        this.showAddressTile = true,
-        this.shadowColor,
-        this.countryGetter,
-        this.cityGetter,
-        this.townGetter,
-        this.districtGetter});
+      this.showAddressTile = true,
+      this.shadowColor,
+      this.countryGetter,
+      this.cityGetter,
+      this.townGetter,
+      this.districtGetter,
+      this.onSave});
 
   GizEditText txtAddressName = GizEditText(TextEditingController());
   GizEditText txtCustomerName = GizEditText(TextEditingController());
@@ -65,29 +71,50 @@ class GizAddressWidget extends GizStateLessWidget {
                       Flexible(
                           flex: 1,
                           fit: FlexFit.tight,
-                          child: Container(
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Text(
-                                  "Bireysel",
-                                  textAlign: TextAlign.center,
-                                ),
-                              ))),
+                          child: InkWell(
+                            onTap: () {
+                              if (isKurumsal) {
+                                print(addres.addressName);
+                                print(__GizAddress.value.addressName);
+                                AddressType = "Bireysel";
+                                setState(() {});
+                              }
+                            },
+                            child: Container(
+                                color: !isKurumsal ? shadowColor : null,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Text(
+                                    "Bireysel",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )),
+                          )),
                       Flexible(
                           flex: 1,
                           fit: FlexFit.tight,
-                          child: Container(
-                              color: shadowColor,
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Text("Kurumsal",
-                                    textAlign: TextAlign.center),
-                              ))),
+                          child: InkWell(
+                            onTap: () {
+                              if (!isKurumsal) {
+                                AddressType = "Kurumsal";
+                                print(addres.addressName);
+                                print(__GizAddress.value.addressName);
+                                setState(() {});
+                              }
+                            },
+                            child: Container(
+                                color: isKurumsal ? shadowColor : null,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Text("Kurumsal",
+                                      textAlign: TextAlign.center),
+                                )),
+                          )),
                     ],
                   ),
                 if (showAddressTile)
                   txtAddressName = GizEditText(
-                    TextEditingController(),
+                    txtAddressName.controller,
                     icon: Icon(
                       Icons.edit,
                     ),
@@ -103,7 +130,7 @@ class GizAddressWidget extends GizStateLessWidget {
                       flex: 1,
                       fit: FlexFit.tight,
                       child: txtCustomerName = GizEditText(
-                        TextEditingController(),
+                        txtCustomerName.controller,
                         icon: Icon(
                           Icons.edit,
                         ),
@@ -117,7 +144,7 @@ class GizAddressWidget extends GizStateLessWidget {
                       flex: 1,
                       fit: FlexFit.tight,
                       child: txtCustomerSurname = GizEditText(
-                        TextEditingController(),
+                        txtCustomerSurname.controller,
                         hint: "Soyad",
                         isFiilSolid: false,
                         icon: Icon(
@@ -129,8 +156,53 @@ class GizAddressWidget extends GizStateLessWidget {
                     ),
                   ],
                 ),
+                if (isKurumsal) ...{
+                  txtCompanyName = GizEditText(
+                    txtCompanyName.controller,
+                    hint: "Firma Ünvanı",
+                    isFiilSolid: false,
+                    icon: Icon(
+                      Icons.store,
+                    ),
+                    shadowColor: shadowColor,
+                    valueChanged: (value) => addres.companyName = value,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: txtTaxOffice = GizEditText(
+                          txtTaxOffice.controller,
+                          hint: "Vergi Dairesi",
+                          isFiilSolid: false,
+                          icon: Icon(
+                            Icons.edit,
+                          ),
+                          shadowColor: shadowColor,
+                          valueChanged: (value) => addres.taxOffice = value,
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: txtTaxNo = GizEditText(
+                          txtTaxNo.controller,
+                          hint: "Vergi Numarası",
+                          isFiilSolid: false,
+                          icon: Icon(
+                            Icons.edit,
+                          ),
+                          shadowColor: shadowColor,
+                          valueChanged: (value) => addres.taxNumber = value,
+                        ),
+                      ),
+                    ],
+                  )
+                },
                 txtPhoneNumber = GizEditText(
-                  TextEditingController(),
+                  txtPhoneNumber.controller,
                   hint: "Telefon Numarası",
                   isFiilSolid: false,
                   icon: Icon(
@@ -138,49 +210,6 @@ class GizAddressWidget extends GizStateLessWidget {
                   ),
                   shadowColor: shadowColor,
                   valueChanged: (value) => addres.mobilePhone = value,
-                ),
-                txtCompanyName = GizEditText(
-                  TextEditingController(),
-                  hint: "Firma Ünvanı",
-                  isFiilSolid: false,
-                  icon: Icon(
-                    Icons.store,
-                  ),
-                  shadowColor: shadowColor,
-                  valueChanged: (value) => addres.companyName = value,
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: txtTaxOffice = GizEditText(
-                        TextEditingController(),
-                        hint: "Vergi Dairesi",
-                        isFiilSolid: false,
-                        icon: Icon(
-                          Icons.edit,
-                        ),
-                        shadowColor: shadowColor,
-                        valueChanged: (value) => addres.taxOffice = value,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: txtTaxNo = GizEditText(
-                        TextEditingController(),
-                        hint: "Vergi Numarası",
-                        isFiilSolid: false,
-                        icon: Icon(
-                          Icons.edit,
-                        ),
-                        shadowColor: shadowColor,
-                        valueChanged: (value) => addres.taxNumber = value,
-                      ),
-                    ),
-                  ],
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.max,
@@ -285,7 +314,7 @@ class GizAddressWidget extends GizStateLessWidget {
                   ],
                 ),
                 txtAddress = GizEditText(
-                  TextEditingController(),
+                  txtAddress.controller,
                   hint: "Adres",
                   isFiilSolid: false,
                   icon: Icon(
@@ -294,6 +323,8 @@ class GizAddressWidget extends GizStateLessWidget {
                   shadowColor: shadowColor,
                   valueChanged: (value) => addres.address = value,
                 ),
+                if(onSave != null)
+                FlatButton( color: shadowColor,onPressed: () => onSave(addres), child: Text("Bilgileri Kaydet"))
               ],
             ),
           );
@@ -346,75 +377,72 @@ class GizAddressWidget extends GizStateLessWidget {
         print("asdasd");
 
         return Container(
-          constraints: BoxConstraints(maxHeight: gizContext.height, minHeight: gizContext.height),
-          height: gizContext.height ,
+          constraints: BoxConstraints(
+              maxHeight: gizContext.height, minHeight: gizContext.height),
+          height: gizContext.height,
           width: gizContext.width,
           color: shadowColor ?? activeTheme.shadowColor,
-          child: ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Text(
-                    title,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                //GizEditText(TextEditingController(), shadowColor: Colors.white,isHintInclude: true,hint: 'Ülke Ara',),
-                for (int i = 0; i < items.length; i++)
-                  Padding(
-                    padding:
+          child: ListView(children: [
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Text(
+                title,
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            //GizEditText(TextEditingController(), shadowColor: Colors.white,isHintInclude: true,hint: 'Ülke Ara',),
+            for (int i = 0; i < items.length; i++)
+              Padding(
+                padding:
                     const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-                    child: InkWell(
-                      onTap: () {
-                        switch (sheetType) {
-                          case "country":
-                            country.value = items[i];
-                            __GizAddress.value.countryId = country.value.key;
-                            __GizAddress.value.countryName =
-                                country.value.value;
-                            break;
-                          case "city":
-                            city.value = items[i];
-                            __GizAddress.value.cityId = city.value.key;
-                            __GizAddress.value.cityName = city.value.value;
-                            break;
-                          case "town":
-                            town.value = items[i];
-                            __GizAddress.value.townId = town.value.key;
-                            __GizAddress.value.townName = town.value.value;
-                            break;
-                          case "district":
-                            district.value = items[i];
-                            __GizAddress.value.districtId = district.value.key;
-                            __GizAddress.value.districtName =
-                                district.value.value;
-                            break;
-                        }
+                child: InkWell(
+                  onTap: () {
+                    switch (sheetType) {
+                      case "country":
+                        country.value = items[i];
+                        __GizAddress.value.countryId = country.value.key;
+                        __GizAddress.value.countryName = country.value.value;
+                        break;
+                      case "city":
+                        city.value = items[i];
+                        __GizAddress.value.cityId = city.value.key;
+                        __GizAddress.value.cityName = city.value.value;
+                        break;
+                      case "town":
+                        town.value = items[i];
+                        __GizAddress.value.townId = town.value.key;
+                        __GizAddress.value.townName = town.value.value;
+                        break;
+                      case "district":
+                        district.value = items[i];
+                        __GizAddress.value.districtId = district.value.key;
+                        __GizAddress.value.districtName = district.value.value;
+                        break;
+                    }
 
-                        bottomSheetController.close();
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Icon(Icons.flag),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  items[i].value,
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ),
-                            ],
+                    bottomSheetController.close();
+                  },
+                  child: Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Icon(Icons.flag),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              items[i].value,
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  )
-              ]
-          ),
+                  ),
+                ),
+              )
+          ]),
         );
       },
     );
@@ -425,25 +453,25 @@ class GizAddressWidget extends GizStateLessWidget {
 class GizAddress {
   GizAddress(
       {this.addressName = "",
-        this.customerName = "",
-        this.customerSurName = "",
-        this.countryId = "",
-        this.countryName = "",
-        this.cityId = "",
-        this.cityName = "",
-        this.townId = "",
-        this.townName = "",
-        this.address = "",
-        this.postCode = "",
-        this.taxNumber = "",
-        this.taxOffice = "",
-        this.mobilePhone = "",
-        this.fax = "",
-        this.email = "",
-        this.companyName = "",
-        this.addressType = "",
-        this.districtId,
-        this.districtName});
+      this.customerName = "",
+      this.customerSurName = "",
+      this.countryId = "",
+      this.countryName = "",
+      this.cityId = "",
+      this.cityName = "",
+      this.townId = "",
+      this.townName = "",
+      this.address = "",
+      this.postCode = "",
+      this.taxNumber = "",
+      this.taxOffice = "",
+      this.mobilePhone = "",
+      this.fax = "",
+      this.email = "",
+      this.companyName = "",
+      this.addressType = "",
+      this.districtId,
+      this.districtName});
 
   String addressName;
   String customerName;
@@ -495,26 +523,26 @@ class GizAddress {
   }
 
   String toJson() => jsonEncode({
-    "CustomerName": customerName,
-    "CustomerSurName": customerSurName,
-    "CountryID": countryId,
-    "CountryName": countryName,
-    "CityID": cityId,
-    "CityName": cityName,
-    "TownID": townId,
-    "TownName": townName,
-    "Address": address,
-    "PostCode": postCode,
-    "TaxNumber": taxNumber,
-    "TaxOffice": taxOffice,
-    "MobilePhone": mobilePhone,
-    "Fax": fax,
-    "Email": email,
-    "CompanyName": companyName,
-    "AddressType": addressType,
-    "DistrictID": districtId,
-    "DistrictName": districtName
-  });
+        "CustomerName": customerName,
+        "CustomerSurName": customerSurName,
+        "CountryID": countryId,
+        "CountryName": countryName,
+        "CityID": cityId,
+        "CityName": cityName,
+        "TownID": townId,
+        "TownName": townName,
+        "Address": address,
+        "PostCode": postCode,
+        "TaxNumber": taxNumber,
+        "TaxOffice": taxOffice,
+        "MobilePhone": mobilePhone,
+        "Fax": fax,
+        "Email": email,
+        "CompanyName": companyName,
+        "AddressType": addressType,
+        "DistrictID": districtId,
+        "DistrictName": districtName
+      });
 }
 
 class KeyValuePair<T, E> {
@@ -522,5 +550,5 @@ class KeyValuePair<T, E> {
   E value;
   dynamic data;
 
-  KeyValuePair(this.key, this.value,this.data);
+  KeyValuePair(this.key, this.value, this.data);
 }

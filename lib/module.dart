@@ -54,18 +54,17 @@ BuildContext get gizContext => navigatorKey.currentContext;
 
 typedef WidgetGetter<T> = T Function(GizState state);
 
-
 abstract class GizStateLessWidget extends StatelessWidget {
+  ValueNotifier<bool> __GizStateLessWidget = ValueNotifier(false);
 
-  ValueNotifier<bool> __GizStateLessWidget =  ValueNotifier(false);
   Widget buildWidget(BuildContext context);
+
   BuildContext buildContext;
   bool isFirstState = true;
 
-
   void setState(VoidCallback fn) {
     try {
-      __GizStateLessWidget.value =!__GizStateLessWidget.value;
+      __GizStateLessWidget.value = !__GizStateLessWidget.value;
     } catch (ex) {
       print("State Exception -------------------" + ex.toString());
     }
@@ -75,40 +74,39 @@ abstract class GizStateLessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     buildContext = context;
-    Widget widget = ValueListenableBuilder(valueListenable: __GizStateLessWidget, builder: (context, value, child) {
-      if (Platform.isAndroid) {
-        return  WillPopScope(
-          onWillPop: onBackPressed,
-          child: GestureDetector(
-            onTap: () {
-              FocusScope.of(gizContext).requestFocus(new FocusNode());
-            },
-            child: buildWidget(context),
-          ),
-        );
-      }
+    Widget widget = ValueListenableBuilder(
+      valueListenable: __GizStateLessWidget,
+      builder: (context, value, child) {
+        if (Platform.isAndroid) {
+          return WillPopScope(
+            onWillPop: onBackPressed,
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(gizContext).requestFocus(new FocusNode());
+              },
+              child: buildWidget(context),
+            ),
+          );
+        }
 
-      return GestureDetector(
-        onTap: () {
-          FocusScope.of(gizContext).requestFocus(new FocusNode());
-        },
-        child: buildWidget(context),
-      );
-    },);
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(gizContext).requestFocus(new FocusNode());
+          },
+          child: buildWidget(context),
+        );
+      },
+    );
 
     isFirstState = false;
 
     return widget;
-
-
-
   }
 
   Future<bool> onBackPressed() async {
     return true;
   }
 }
-
 
 abstract class GizStatefulWidget extends StatefulWidget {
   Widget buildWidget(GizState state);
@@ -1406,6 +1404,7 @@ class GizWidgetBorder extends StatelessWidget {
   Color shadowColor;
   Color hintColor;
   GestureTapCallback onTap;
+
   GizWidgetBorder(
       {this.icon,
       this.hint,
@@ -1501,13 +1500,13 @@ class GizWidgetBorder extends StatelessWidget {
 }
 
 class GizEditText extends StatelessWidget {
-
   TextEditingController controller;
   String hint;
   bool showClearButton;
   bool showBarcodeButton;
   bool enabled;
   ValueChanged<String> valueChanged;
+  ValueChanged<String> onSubmitted;
 
   Icon icon;
   TextStyle textStyle;
@@ -1524,6 +1523,7 @@ class GizEditText extends StatelessWidget {
       this.showBarcodeButton = false,
       this.enabled = true,
       this.valueChanged,
+      this.onSubmitted,
       this.icon,
       this.textStyle,
       this.isFiilSolid = true,
@@ -1548,7 +1548,7 @@ class GizEditText extends StatelessWidget {
         "", "Kapat", true, ScanMode.DEFAULT);
     text = res == "-1" ? "" : res;
 
-    if (res != "-1" && valueChanged != null) valueChanged(text);
+    if (res != "-1" && onSubmitted != null) onSubmitted(text);
     return text;
   }
 
@@ -1561,7 +1561,7 @@ class GizEditText extends StatelessWidget {
           hint: hint,
           icon: icon,
           hintColor: hintColor,
-          showClearButton: enabled && showClearButton,
+          showClearButton: enabled && showClearButton && text.length > 0,
           showBarcodeButton: enabled && showBarcodeButton,
           onClear: () => clear(),
           onScanBarcode: () => scanBarcode(),
@@ -1572,7 +1572,8 @@ class GizEditText extends StatelessWidget {
               ? TextField(
                   decoration: InputDecoration(border: InputBorder.none),
                   controller: controller,
-                  onSubmitted: valueChanged,
+                  onSubmitted: onSubmitted,
+                  onChanged: valueChanged,
                   style: textStyle,
                   inputFormatters: formatters,
                 )
@@ -1585,8 +1586,6 @@ class GizEditText extends StatelessWidget {
     );
   }
 }
-
-
 
 //region SearchText
 
@@ -1615,7 +1614,6 @@ class GizSearchText extends StatelessWidget {
   bool isHintInclude;
   Color shadowColor;
   Color hintColor;
-
 
   String get title => controller.value.title;
 
@@ -1652,7 +1650,7 @@ class GizSearchText extends StatelessWidget {
             hint: hint,
             icon: icon,
             hintColor: hintColor,
-            showClearButton: enabled && showClearButton,
+            showClearButton: enabled && showClearButton && title.length > 0,
             showBarcodeButton: false,
             isFiilSolid: isFiilSolid,
             isHintInclude: isHintInclude,
@@ -1730,7 +1728,7 @@ class GizDateText extends StatelessWidget {
         child: GizWidgetBorder(
           hintColor: hintColor,
           hint: hint,
-          showClearButton: enabled && showClearButton,
+          showClearButton: enabled && showClearButton && dateTime != null,
           showBarcodeButton: false,
           isFiilSolid: isFiilSolid,
           isHintInclude: isHintInclude,
@@ -1791,20 +1789,19 @@ class GizSwitch extends StatelessWidget {
   bool isHintInclude;
   Color shadowColor;
 
-  GizSwitch({
-    this.value = false,
-    this.hint,
-    this.showClearButton = true,
-    this.showBarcodeButton = false,
-    this.enabled = true,
-    this.valueChanged,
-    this.textStyle,
-    this.isHintInclude = false,
-    this.isFiilSolid = true,
-    this.icon,
-    this.shadowColor,
-    this.hintColor
-  }) {
+  GizSwitch(
+      {this.value = false,
+      this.hint,
+      this.showClearButton = true,
+      this.showBarcodeButton = false,
+      this.enabled = true,
+      this.valueChanged,
+      this.textStyle,
+      this.isHintInclude = false,
+      this.isFiilSolid = true,
+      this.icon,
+      this.shadowColor,
+      this.hintColor}) {
     // key = GlobalKey();
   }
 
@@ -1940,7 +1937,7 @@ class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
               if (!widget.hideIcon)
                 RotationTransition(
                   turns: _rotateAnimation,
-                  child:  Icon(Icons.arrow_drop_down),
+                  child: Icon(Icons.arrow_drop_down),
                 ),
             ],
           ),
