@@ -1380,6 +1380,14 @@ extension EX_BuildContext on BuildContext {
   get isLarge => this.height > 800;
 
   get isKeyBoardOpen => WidgetsBinding.instance.window.viewInsets.bottom > 0;
+
+  void open(Widget widget, {bool replace = false}) {
+    if (replace)
+      Navigator.pushReplacement(
+          this, MaterialPageRoute(builder: (context) => widget));
+    else
+      Navigator.push(this, MaterialPageRoute(builder: (context) => widget));
+  }
 }
 
 extension EX_Int on int {
