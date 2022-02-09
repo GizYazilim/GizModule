@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:giz_module/module.dart';
 
 class GizAddressWidget extends GizStateLessWidget {
-  ValueNotifier<GizAddress> __GizAddress =
-      new ValueNotifier<GizAddress>(GizAddress());
+  ValueNotifier<GizAddress> __GizAddress = new ValueNotifier<GizAddress>(GizAddress());
 
   GizAddress get address => __GizAddress.value;
 
@@ -17,31 +16,118 @@ class GizAddressWidget extends GizStateLessWidget {
   bool showSwichBar = true;
   bool showAddressTile = true;
   Color shadowColor;
-  ValueChanged<GizAddress> onSave;
+  ValueChanged<GizAddressWidget> onSave;
 
   ValueNotifier<KeyValuePair<String, String>> country = ValueNotifier(null);
   ValueNotifier<KeyValuePair<String, String>> city = ValueNotifier(null);
   ValueNotifier<KeyValuePair<String, String>> town = ValueNotifier(null);
   ValueNotifier<KeyValuePair<String, String>> district = ValueNotifier(null);
 
-  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget>
-      countryGetter;
-  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget>
-      cityGetter;
-  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget>
-      townGetter;
-  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget>
-      districtGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget> countryGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget> cityGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget> townGetter;
+  GizValueGetter<List<KeyValuePair<String, String>>, GizAddressWidget> districtGetter;
 
-  GizAddressWidget(
-      {this.showSwichBar = true,
-      this.showAddressTile = true,
-      this.shadowColor,
-      this.countryGetter,
-      this.cityGetter,
-      this.townGetter,
-      this.districtGetter,
-      this.onSave});
+  bool isValidateOnSave;
+  bool isRequired_AddressName;
+  bool isRequired_CustomerName;
+  bool isRequired_CustomerSurName;
+  bool isRequired_Country;
+  bool isRequired_City;
+  bool isRequired_Town;
+  bool isRequired_District;
+  bool isRequired_Address;
+  bool isRequired_PostCode;
+  bool isRequired_TaxNumber;
+  bool isRequired_TaxOffice;
+  bool isRequired_MobilePhone;
+  bool isRequired_Fax;
+  bool isRequired_Email;
+  bool isRequired_CompanyName;
+
+  GizAddressWidget({
+    this.showSwichBar = true,
+    this.showAddressTile = true,
+    this.shadowColor,
+    this.countryGetter,
+    this.cityGetter,
+    this.townGetter,
+    this.districtGetter,
+    this.onSave,
+    this.isRequired_AddressName = true,
+    this.isRequired_CustomerName = true,
+    this.isRequired_CustomerSurName = true,
+    this.isRequired_Country = true,
+    this.isRequired_City = true,
+    this.isRequired_Town = true,
+    this.isRequired_District = false,
+    this.isRequired_Address = true,
+    this.isRequired_PostCode = true,
+    this.isRequired_TaxNumber = true,
+    this.isRequired_TaxOffice = true,
+    this.isRequired_MobilePhone = true,
+    this.isRequired_Fax = true,
+    this.isRequired_Email = true,
+    this.isRequired_CompanyName = true,
+    this.isValidateOnSave = false,
+  });
+
+  String get textAdresBasligiGir => "Adres Başlığını Giriniz.";
+
+  String get textAdiniGir => "Adınızı Giriniz.";
+
+  String get textSoyadiniGir => "Soyadınızı Giriniz.";
+
+  String get textTelefonGir => "Telefon Numaranızı Giriniz.";
+
+  String get textEPostaGir => "E-Posta Adresinizi Giriniz.";
+
+  String get textAdresGir => "Adresinizi Giriniz.";
+
+  String get textFirmaUnvanGir => "Firma Unvanını Giriniz.";
+
+  String get textVergiDaireGir => "Vergi Dairesini Giriniz.";
+
+  String get textVergiNoGir => "Vergi Numarasını Giriniz.";
+
+  bool Validate() {
+    bool unValidated = false;
+
+    unValidated = (isRequired_AddressName && txtAddressName.isEmpty(textAdresBasligiGir)) || unValidated;
+    unValidated = (isRequired_CustomerName && txtCustomerName.isEmpty(textAdiniGir)) || unValidated;
+    unValidated = (isRequired_CustomerSurName && txtCustomerSurname.isEmpty(textSoyadiniGir)) || unValidated;
+    unValidated = (isRequired_MobilePhone && txtPhoneNumber.isEmpty(textTelefonGir)) || unValidated;
+    unValidated = (isRequired_Email && txtEmail.isEmpty(textEPostaGir)) || unValidated;
+    unValidated = (isRequired_Address && txtAddress.isEmpty(textAdresGir)) || unValidated;
+
+    if (isKurumsal) {
+      unValidated = (isRequired_CompanyName && txtCompanyName.isEmpty(textFirmaUnvanGir)) || unValidated;
+      unValidated = (isRequired_TaxOffice && txtTaxOffice.isEmpty(textVergiDaireGir)) || unValidated;
+      unValidated = (isRequired_TaxNumber && txtTaxNo.isEmpty(textVergiNoGir)) || unValidated;
+    }
+
+    if (isRequired_Country && countryGetter != null && (address.countryId == null || address.countryId.isEmpty)) {
+      unValidated = true;
+      borderCountry.error.value = "Ülke Seçiniz.";
+    }
+
+    if (isRequired_City && cityGetter != null && (address.cityId == null || address.cityId.isEmpty)) {
+      unValidated = true;
+      borderCity.error.value = "Şehir Seçiniz.";
+    }
+
+    if (isRequired_Town && townGetter != null && (address.townId == null || address.townId.isEmpty)) {
+      unValidated = true;
+      borderTown.error.value = "İlçe Seçiniz.";
+    }
+
+    if (isRequired_District && districtGetter != null && (address.districtId == null || address.districtId.isEmpty)) {
+      unValidated = true;
+      borderDistrict.error.value = "Semt Seçiniz.";
+    }
+
+    return !unValidated;
+  }
 
   GizEditText txtAddressName = GizEditText(TextEditingController());
   GizEditText txtCustomerName = GizEditText(TextEditingController());
@@ -51,6 +137,12 @@ class GizAddressWidget extends GizStateLessWidget {
   GizEditText txtTaxOffice = GizEditText(TextEditingController());
   GizEditText txtTaxNo = GizEditText(TextEditingController());
   GizEditText txtAddress = GizEditText(TextEditingController());
+  GizEditText txtEmail = GizEditText(TextEditingController());
+
+  GizWidgetBorder borderCountry;
+  GizWidgetBorder borderCity;
+  GizWidgetBorder borderTown;
+  GizWidgetBorder borderDistrict;
 
   @override
   Widget buildWidget(BuildContext context) {
@@ -113,8 +205,7 @@ class GizAddressWidget extends GizStateLessWidget {
                                 color: isKurumsal ? shadowColor : null,
                                 child: Padding(
                                   padding: const EdgeInsets.all(15.0),
-                                  child: Text("Kurumsal",
-                                      textAlign: TextAlign.center),
+                                  child: Text("Kurumsal", textAlign: TextAlign.center),
                                 )),
                           )),
                     ],
@@ -123,10 +214,11 @@ class GizAddressWidget extends GizStateLessWidget {
                   txtAddressName = GizEditText(
                     txtAddressName.controller,
                     icon: Icon(
-                      Icons.edit,
+                      Icons.home,
                     ),
                     hint: "Adres Başlığı",
                     valueChanged: (value) => addres.addressName = value,
+                    onSubmitted: (value) => addres.addressName = value,
                     isFiilSolid: false,
                     shadowColor: shadowColor,
                   ),
@@ -145,6 +237,7 @@ class GizAddressWidget extends GizStateLessWidget {
                         isFiilSolid: false,
                         shadowColor: shadowColor,
                         valueChanged: (value) => addres.customerName = value,
+                        onSubmitted: (value) => addres.customerName = value,
                       ),
                     ),
                     Flexible(
@@ -159,6 +252,7 @@ class GizAddressWidget extends GizStateLessWidget {
                         ),
                         shadowColor: shadowColor,
                         valueChanged: (value) => addres.customerSurName = value,
+                        onSubmitted: (value) => addres.customerSurName = value,
                       ),
                     ),
                   ],
@@ -173,6 +267,7 @@ class GizAddressWidget extends GizStateLessWidget {
                     ),
                     shadowColor: shadowColor,
                     valueChanged: (value) => addres.companyName = value,
+                    onSubmitted: (value) => addres.companyName = value,
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.max,
@@ -185,10 +280,11 @@ class GizAddressWidget extends GizStateLessWidget {
                           hint: "Vergi Dairesi",
                           isFiilSolid: false,
                           icon: Icon(
-                            Icons.edit,
+                            Icons.storefront_sharp,
                           ),
                           shadowColor: shadowColor,
                           valueChanged: (value) => addres.taxOffice = value,
+                          onSubmitted: (value) => addres.taxOffice = value,
                         ),
                       ),
                       Flexible(
@@ -199,10 +295,11 @@ class GizAddressWidget extends GizStateLessWidget {
                           hint: "Vergi Numarası",
                           isFiilSolid: false,
                           icon: Icon(
-                            Icons.edit,
+                            Icons.dialpad,
                           ),
                           shadowColor: shadowColor,
                           valueChanged: (value) => addres.taxNumber = value,
+                          onSubmitted: (value) => addres.taxNumber = value,
                         ),
                       ),
                     ],
@@ -217,6 +314,18 @@ class GizAddressWidget extends GizStateLessWidget {
                   ),
                   shadowColor: shadowColor,
                   valueChanged: (value) => addres.mobilePhone = value,
+                  onSubmitted: (value) => addres.mobilePhone = value,
+                ),
+                txtEmail = GizEditText(
+                  txtEmail.controller,
+                  hint: "E-Posta Adresi",
+                  isFiilSolid: false,
+                  icon: Icon(
+                    Icons.alternate_email,
+                  ),
+                  shadowColor: shadowColor,
+                  valueChanged: (value) => addres.email = value,
+                  onSubmitted: (value) => addres.email = value,
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.max,
@@ -227,19 +336,15 @@ class GizAddressWidget extends GizStateLessWidget {
                         builder: (context, value, child) => Flexible(
                           flex: 1,
                           fit: FlexFit.tight,
-                          child: GizWidgetBorder(
+                          child: borderCountry = GizWidgetBorder(
                             onTap: () {
                               showCountry();
                             },
                             hint: "Ülke",
-                            icon: Icon(Icons.edit),
+                            icon: Icon(Icons.map),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    value == null ? "Seçiniz..." : value.value),
-                                Icon(Icons.arrow_drop_down)
-                              ],
+                              children: [Text(value == null ? "Seçiniz..." : value.value), Icon(Icons.arrow_drop_down)],
                             ),
                           ),
                         ),
@@ -250,19 +355,15 @@ class GizAddressWidget extends GizStateLessWidget {
                         builder: (context, value, child) => Flexible(
                           flex: 1,
                           fit: FlexFit.tight,
-                          child: GizWidgetBorder(
+                          child: borderCity = GizWidgetBorder(
                             onTap: () {
                               showCity();
                             },
                             hint: "Şehir",
-                            icon: Icon(Icons.edit),
+                            icon: Icon(Icons.map),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    value == null ? "Seçiniz..." : value.value),
-                                Icon(Icons.arrow_drop_down)
-                              ],
+                              children: [Text(value == null ? "Seçiniz..." : value.value), Icon(Icons.arrow_drop_down)],
                             ),
                           ),
                         ),
@@ -278,19 +379,15 @@ class GizAddressWidget extends GizStateLessWidget {
                         builder: (context, value, child) => Flexible(
                           flex: 1,
                           fit: FlexFit.tight,
-                          child: GizWidgetBorder(
+                          child: borderTown = GizWidgetBorder(
                             onTap: () {
                               showTown();
                             },
                             hint: "İlçe",
-                            icon: Icon(Icons.edit),
+                            icon: Icon(Icons.map),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    value == null ? "Seçiniz..." : value.value),
-                                Icon(Icons.arrow_drop_down)
-                              ],
+                              children: [Text(value == null ? "Seçiniz..." : value.value), Icon(Icons.arrow_drop_down)],
                             ),
                           ),
                         ),
@@ -301,19 +398,15 @@ class GizAddressWidget extends GizStateLessWidget {
                         builder: (context, value, child) => Flexible(
                           flex: 1,
                           fit: FlexFit.tight,
-                          child: GizWidgetBorder(
+                          child: borderDistrict = GizWidgetBorder(
                             onTap: () {
                               showDistrict();
                             },
                             hint: "Semt",
-                            icon: Icon(Icons.edit),
+                            icon: Icon(Icons.map),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                    value == null ? "Seçiniz..." : value.value),
-                                Icon(Icons.arrow_drop_down)
-                              ],
+                              children: [Text(value == null ? "Seçiniz..." : value.value), Icon(Icons.arrow_drop_down)],
                             ),
                           ),
                         ),
@@ -325,15 +418,21 @@ class GizAddressWidget extends GizStateLessWidget {
                   hint: "Adres",
                   isFiilSolid: false,
                   icon: Icon(
-                    Icons.edit,
+                    Icons.line_style,
                   ),
                   shadowColor: shadowColor,
                   valueChanged: (value) => addres.address = value,
+                  onSubmitted: (value) => addres.address = value,
                 ),
                 if (onSave != null)
                   FlatButton(
                       color: shadowColor,
-                      onPressed: () => onSave(addres),
+                      onPressed: () {
+                        if (isValidateOnSave) {
+                          if (Validate()) onSave(this);
+                        } else
+                          onSave(this);
+                      },
                       child: Text("Bilgileri Kaydet"))
               ],
             ),
@@ -344,19 +443,15 @@ class GizAddressWidget extends GizStateLessWidget {
   PersistentBottomSheetController showCountry() {
     return showSheet("country");
   }
-
   PersistentBottomSheetController showCity() {
     return showSheet("city");
   }
-
   PersistentBottomSheetController showTown() {
     return showSheet("town");
   }
-
   PersistentBottomSheetController showDistrict() {
     return showSheet("district");
   }
-
   PersistentBottomSheetController showSheet(String sheetType) {
     PersistentBottomSheetController bottomSheetController;
     bottomSheetController = showBottomSheet(
@@ -387,8 +482,7 @@ class GizAddressWidget extends GizStateLessWidget {
         print("asdasd");
 
         return Container(
-          constraints: BoxConstraints(
-              maxHeight: gizContext.height, minHeight: gizContext.height),
+          constraints: BoxConstraints(maxHeight: gizContext.height, minHeight: gizContext.height),
           height: gizContext.height,
           width: gizContext.width,
           color: shadowColor ?? activeTheme.shadowColor,
@@ -403,8 +497,7 @@ class GizAddressWidget extends GizStateLessWidget {
             //GizEditText(TextEditingController(), shadowColor: Colors.white,isHintInclude: true,hint: 'Ülke Ara',),
             for (int i = 0; i < items.length; i++)
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                 child: InkWell(
                   onTap: () {
                     switch (sheetType) {
@@ -556,7 +649,7 @@ class GizAddress {
         "AddressType": addressType,
         "DistrictID": districtId,
         "DistrictName": districtName,
-    "AddressName":addressName
+        "AddressName": addressName
       });
 }
 

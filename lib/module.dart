@@ -1413,6 +1413,8 @@ class GizWidgetBorder extends StatelessWidget {
   Color hintColor;
   GestureTapCallback onTap;
 
+  ValueNotifier<String> error = ValueNotifier(null);
+
   GizWidgetBorder(
       {this.icon,
       this.hint,
@@ -1429,6 +1431,7 @@ class GizWidgetBorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    error.value = null;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -1446,15 +1449,27 @@ class GizWidgetBorder extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (hint != null)
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                  hint,
-                  style:
-                      TextStyle(color: hintColor ?? activeTheme.primaryColor),
-                ),
-              ),
+            ValueListenableBuilder<String>(
+              valueListenable: error,
+              builder: (context, value, child) => value == null || value.isEmpty
+                  ? (hint != null)
+                      ? Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            hint,
+                            style: TextStyle(
+                                color: hintColor ?? activeTheme.primaryColor),
+                          ),
+                        )
+                      : Container()
+                  : Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        value,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+            ),
             InkWell(
               onTap: onTap,
               child: Container(
@@ -1471,32 +1486,39 @@ class GizWidgetBorder extends StatelessWidget {
                                   width: 2)
                               : null,
                           borderRadius: BorderRadius.all(Radius.circular(5))),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: icon,
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: icon,
+                          ),
+                          Flexible(
+                            flex: 1,
+                            fit: FlexFit.tight,
+                            child: child ?? Container(),
+                          ),
+                          if (showClearButton)
+                            IconButton(
+                                onPressed: () => onClear(),
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.red,
+                                )),
+                          if (showBarcodeButton)
+                            IconButton(
+                                onPressed: () => onScanBarcode(),
+                                icon: Icon(
+                                  Icons.qr_code,
+                                  color: activeTheme.primaryColor,
+                                ))
+                        ],
                       ),
-                      Flexible(
-                        flex: 1,
-                        fit: FlexFit.tight,
-                        child: child ?? Container(),
-                      ),
-                      if (showClearButton)
-                        IconButton(
-                            onPressed: () => onClear(),
-                            icon: Icon(
-                              Icons.clear,
-                              color: Colors.red,
-                            )),
-                      if (showBarcodeButton)
-                        IconButton(
-                            onPressed: () => onScanBarcode(),
-                            icon: Icon(
-                              Icons.qr_code,
-                              color: activeTheme.primaryColor,
-                            ))
                     ],
                   )),
             ),
@@ -1522,6 +1544,12 @@ class GizEditText extends StatelessWidget {
   bool isHintInclude;
   Color shadowColor;
   Color hintColor;
+
+  bool isEmpty([String error = null]) {
+    bool ret = text == null || text.isEmpty;
+    border.error.value = ret ? error : "";
+    return ret;
+  }
 
   List<TextInputFormatter> formatters;
 
@@ -1551,6 +1579,8 @@ class GizEditText extends StatelessWidget {
 
   void clear() => text = "";
 
+  GizWidgetBorder border;
+
   Future<String> scanBarcode() async {
     String res = await FlutterBarcodeScanner.scanBarcode(
         "", "Kapat", true, ScanMode.DEFAULT);
@@ -1565,7 +1595,7 @@ class GizEditText extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: _listener,
       builder: (context, value, child) {
-        return GizWidgetBorder(
+        return border = GizWidgetBorder(
           hint: hint,
           icon: icon,
           hintColor: hintColor,
@@ -2100,4 +2130,4 @@ class GizDropdownStyle {
   });
 }
 
-typedef GizValueGetter<T,E> = T Function(E item);
+typedef GizValueGetter<T, E> = T Function(E item);
