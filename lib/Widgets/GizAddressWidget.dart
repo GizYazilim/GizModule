@@ -159,6 +159,8 @@ class GizAddressWidget extends GizStateLessWidget {
           txtTaxOffice.text = addres.taxOffice;
           txtTaxNo.text = addres.taxNumber;
           txtAddress.text = addres.address;
+          txtEmail.text = addres.email;
+
 
           return SingleChildScrollView(
             child: Column(
