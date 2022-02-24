@@ -11,6 +11,9 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';
 
+import 'FragmentModule/Fragment.dart';
+import 'FragmentModule/FragmentManager.dart';
+
 ThemeData get activeTheme => Theme.of(gizContext);
 
 GizThemeData get activeGizTheme => Theme.of(gizContext) as GizThemeData;
@@ -2036,3 +2039,42 @@ class GizDropdownStyle {
 }
 
 typedef GizValueGetter<T, E> = T Function(E item);
+
+void perForm(String perform) {
+  if ((perform ?? "").isEmpty) return;
+
+  if (perform.startsWith("/")) {
+    List<String> args = perform.split('[');
+    Map<String, String> prms = {};
+    if (args.length > 1) {
+      args[1] = args[1].substring(0, args[1].length - 1);
+      args[1].split(",").forEach((element) {
+        prms[element.split("=")[0]] = element.split("=")[1];
+      });
+    }
+
+    final RouteSettings settings = RouteSettings(
+      name: args[0],
+      arguments: prms,
+    );
+
+    MaterialPageRoute<dynamic> route =
+    Navigator.of(gizContext).widget.onGenerateRoute(settings);
+    if (route == null) return;
+    var widget = route.builder(gizContext);
+
+    if (widget is Fragment && FragmentManager.manager != null) {
+      (widget as Fragment).args = prms;
+      FragmentManager.manager.openFragment(widget);
+      return;
+    }
+    Navigator.push(gizContext,
+        MaterialPageRoute(builder: (context) => widget, settings: settings));
+
+    // Navigator.pushNamed(
+    //   gizContext,
+    //   args[0],
+    //   arguments: prms,
+    // );
+  }
+}
