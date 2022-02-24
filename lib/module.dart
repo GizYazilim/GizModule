@@ -22,11 +22,9 @@ class giz_module {
 
   static var formatter = new NumberFormat.currency(locale: "tr_TR", symbol: "");
 
-  static Future<SharedPreferences> setup() async =>
-      await SharedPreferences.getInstance();
+  static Future<SharedPreferences> setup() async => await SharedPreferences.getInstance();
 
-  static Future setSetup(String Key, String Value) async =>
-      (await setup()).setString(Key, Value);
+  static Future setSetup(String Key, String Value) async => (await setup()).setString(Key, Value);
 
   //istenilen değeri okur
   static Future<String> getSetup(String Key, {String Value = ""}) async {
@@ -44,8 +42,7 @@ class giz_module {
 }
 
 extension DateEx on DateTime {
-  String toFormat({String format}) =>
-      DateFormat(format ?? giz_module.DateFomat).format(this);
+  String toFormat({String format}) => DateFormat(format ?? giz_module.DateFomat).format(this);
 }
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
@@ -182,8 +179,7 @@ extension HexColor on Color {
   /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
   static Color fromHex(String hexString) {
     final buffer = StringBuffer();
-    if (hexString != null && hexString.length == 6 || hexString.length == 7)
-      buffer.write('ff');
+    if (hexString != null && hexString.length == 6 || hexString.length == 7) buffer.write('ff');
     buffer.write(hexString.replaceFirst('#', ''));
     return Color(int.parse(buffer.toString(), radix: 16));
   }
@@ -378,8 +374,7 @@ class GizTheme {
     },
   );
 
-  static ThemeData createThemeData() =>
-      ThemeData(primaryColor: GizTheme.colorPrimary);
+  static ThemeData createThemeData() => ThemeData(primaryColor: GizTheme.colorPrimary);
 }
 
 class GizThemeData {
@@ -648,9 +643,7 @@ Widget GizText(
 }) {
   Widget image;
 
-  TextStyle _textStyle = textStyle != null
-      ? textStyle
-      : TextStyle(color: textColor, fontSize: fontSize);
+  TextStyle _textStyle = textStyle != null ? textStyle : TextStyle(color: textColor, fontSize: fontSize);
 
   if (assetIconName != null)
     image = Image.asset(
@@ -675,11 +668,7 @@ Widget GizText(
     );
 
   return Padding(
-    padding: EdgeInsets.only(
-        left: leftPadding,
-        right: rightPadding,
-        top: topPadding,
-        bottom: bottomPadding),
+    padding: EdgeInsets.only(left: leftPadding, right: rightPadding, top: topPadding, bottom: bottomPadding),
     child: Row(
       mainAxisAlignment: mainAxisAlignment,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -740,17 +729,14 @@ Widget GizTextField_1({
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(color: textColor),
           ),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.white)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.white)),
           prefixIcon: Icon(
             icon,
             color: Color.fromRGBO(0, 34, 124, 5),
           ),
           fillColor: Color.fromRGBO(229, 229, 229, 5),
           filled: true,
-          labelStyle:
-              TextStyle(fontSize: 12, color: Color.fromRGBO(0, 34, 124, 5))),
+          labelStyle: TextStyle(fontSize: 12, color: Color.fromRGBO(0, 34, 124, 5))),
     ),
   );
 }
@@ -784,17 +770,12 @@ Widget GizTextField({
   List<TextInputFormatter> formatters,
   ValueChanged<String> valueChanged,
 }) {
-  if (textColor == null)
-    textColor = filled ? Colors.white : GizTheme.colorPrimary;
+  if (textColor == null) textColor = filled ? Colors.white : GizTheme.colorPrimary;
 
   if (autofocus == null) autofocus = autofocus ? false : true;
 
   return Padding(
-    padding: EdgeInsets.only(
-        left: leftPadding,
-        right: rightPadding,
-        top: topPadding,
-        bottom: bottomPadding),
+    padding: EdgeInsets.only(left: leftPadding, right: rightPadding, top: topPadding, bottom: bottomPadding),
     child: TextFormField(
       onFieldSubmitted: onEnter,
       enabled: enable ?? true,
@@ -813,12 +794,8 @@ Widget GizTextField({
           contentPadding: EdgeInsets.all(0.0),
           hintText: hintText,
           hintStyle: TextStyle(color: hintTextColor),
-          errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.circular(radius)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: textColor),
-              borderRadius: BorderRadius.circular(radius)),
+          errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red), borderRadius: BorderRadius.circular(radius)),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: textColor), borderRadius: BorderRadius.circular(radius)),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: textColor),
             borderRadius: BorderRadius.circular(radius),
@@ -854,15 +831,10 @@ Widget GizTextField_2({
   List<TextInputFormatter> formatters,
   ValueChanged<String> valueChanged,
 }) {
-  if (textColor == null)
-    textColor = filled ? Colors.white : GizTheme.colorPrimary;
+  if (textColor == null) textColor = filled ? Colors.white : GizTheme.colorPrimary;
 
   return Padding(
-    padding: EdgeInsets.only(
-        left: leftPadding,
-        right: rightPadding,
-        top: topPadding,
-        bottom: bottomPadding),
+    padding: EdgeInsets.only(left: leftPadding, right: rightPadding, top: topPadding, bottom: bottomPadding),
     child: TextFormField(
       inputFormatters: formatters,
       obscureText: isPassword,
@@ -875,12 +847,8 @@ Widget GizTextField_2({
           contentPadding: EdgeInsets.all(0.0),
           hintText: hintText,
           hintStyle: TextStyle(color: hintTextColor),
-          errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.circular(radius)),
-          enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: textColor),
-              borderRadius: BorderRadius.circular(radius)),
+          errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.red), borderRadius: BorderRadius.circular(radius)),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: textColor), borderRadius: BorderRadius.circular(radius)),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: textColor),
             borderRadius: BorderRadius.circular(radius),
@@ -946,19 +914,14 @@ class DialogBox {
                         width: double.infinity,
                         constraints: BoxConstraints(minHeight: 200),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.white,
-                            border: Border.all(width: 5, color: borderColor)),
+                            borderRadius: BorderRadius.circular(15), color: Colors.white, border: Border.all(width: 5, color: borderColor)),
                         padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               title,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.none),
+                              style: TextStyle(fontSize: 16, color: Colors.black, decoration: TextDecoration.none),
                               textAlign: TextAlign.center,
                             ),
                             if (buttonType == GizDialogButtonType.Ok)
@@ -966,15 +929,12 @@ class DialogBox {
                                 child: Text('Tamam'),
                                 onPressed: () {
                                   Navigator.pop(gizContext);
-                                  if (buttonClick != null)
-                                    buttonClick(GizDialogButtons.Ok);
+                                  if (buttonClick != null) buttonClick(GizDialogButtons.Ok);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     primary: borderColor,
                                     padding: EdgeInsets.all(5.0),
-                                    textStyle: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold)),
+                                    textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                               ),
                             if (buttonType == GizDialogButtonType.YesNo)
                               Row(
@@ -985,30 +945,24 @@ class DialogBox {
                                     child: Text('Hayır'),
                                     onPressed: () {
                                       Navigator.pop(gizContext);
-                                      if (buttonClick != null)
-                                        buttonClick(GizDialogButtons.No);
+                                      if (buttonClick != null) buttonClick(GizDialogButtons.No);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary: GizTheme.colorCancel,
                                         padding: EdgeInsets.all(5.0),
-                                        textStyle: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold)),
+                                        textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                                   ),
                                   SizedBox(width: 10),
                                   ElevatedButton(
                                     child: Text('Evet'),
                                     onPressed: () {
                                       Navigator.pop(gizContext);
-                                      if (buttonClick != null)
-                                        buttonClick(GizDialogButtons.Yes);
+                                      if (buttonClick != null) buttonClick(GizDialogButtons.Yes);
                                     },
                                     style: ElevatedButton.styleFrom(
                                         primary: GizTheme.colorConfirm,
                                         padding: EdgeInsets.all(5.0),
-                                        textStyle: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold)),
+                                        textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
                                   ),
                                 ],
                               )
@@ -1198,14 +1152,11 @@ class httpRequest {
         .timeout(Duration(milliseconds: timeout));
     if (isShowLoading) DialogBox.close();
     if (iscontrollresponsecode) {
-      if ((response.statusCode == 401 ||
-              (response.statusCode == 500 &&
-                  response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
+      if ((response.statusCode == 401 || (response.statusCode == 500 && response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
           AutohorizationError != null) {
         AutohorizationError();
       } else if (response.statusCode >= 400) {
-        DialogBox.show(response.decode["Message"],
-            dialogType: GizDialogType.Error);
+        DialogBox.show(response.decode["Message"] ?? response.decode["error"], dialogType: GizDialogType.Error);
       }
     }
 
@@ -1224,10 +1175,7 @@ class httpRequest {
   }) async {
     print(jsonBody);
 
-    res(await post(url, jsonBody,
-        timeout: timeout,
-        iscontrollresponsecode: iscontrollresponsecode,
-        token: token));
+    res(await post(url, jsonBody, timeout: timeout, iscontrollresponsecode: iscontrollresponsecode, token: token));
   }
 
   static Future<http.Response> put(
@@ -1253,9 +1201,7 @@ class httpRequest {
         .timeout(Duration(milliseconds: timeout));
     DialogBox.close();
     if (iscontrollresponsecode) {
-      if ((response.statusCode == 401 ||
-              (response.statusCode == 500 &&
-                  response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
+      if ((response.statusCode == 401 || (response.statusCode == 500 && response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
           AutohorizationError != null) {
         AutohorizationError();
       }
@@ -1268,8 +1214,7 @@ class httpRequest {
         });
       }*/
       else if (response.statusCode >= 400) {
-        DialogBox.show(response.decode["Message"],
-            dialogType: GizDialogType.Error);
+        DialogBox.show(response.decode["Message"] ?? response.decode["error"], dialogType: GizDialogType.Error);
       }
     }
 
@@ -1286,10 +1231,7 @@ class httpRequest {
     bool iscontrollresponsecode = true,
     String token,
   }) async {
-    res(await put(url, jsonBody,
-        timeout: timeout,
-        iscontrollresponsecode: iscontrollresponsecode,
-        token: token));
+    res(await put(url, jsonBody, timeout: timeout, iscontrollresponsecode: iscontrollresponsecode, token: token));
   }
 
   static Future<http.Response> get(
@@ -1309,16 +1251,11 @@ class httpRequest {
       DialogBox.close();
 
       if (iscontrollresponsecode) {
-        if ((response.statusCode == 401 ||
-                (response.statusCode == 500 &&
-                    response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
+        if ((response.statusCode == 401 || (response.statusCode == 500 && response.decode["Message"] == "Geçersiz Kullanıcı.")) &&
             AutohorizationError != null) {
           AutohorizationError();
-        } else if (response.statusCode >= 400 &&
-            response.statusCode != 404 &&
-            response.statusCode != 401) {
-          DialogBox.show(response.decode["Message"],
-              dialogType: GizDialogType.Error);
+        } else if (response.statusCode >= 400 && response.statusCode != 404 && response.statusCode != 401) {
+          DialogBox.show(response.decode["Message"] ?? response.decode["error"], dialogType: GizDialogType.Error);
         }
       }
 
@@ -1333,13 +1270,8 @@ class httpRequest {
   }
 
   static Future getSync(String url, Function(http.Response) res,
-      {int timeout = 5 * 60 * 1000,
-      bool iscontrollresponsecode = true,
-      String token}) async {
-    res(await get(url,
-        Timeout: timeout,
-        iscontrollresponsecode: iscontrollresponsecode,
-        token: token));
+      {int timeout = 5 * 60 * 1000, bool iscontrollresponsecode = true, String token}) async {
+    res(await get(url, Timeout: timeout, iscontrollresponsecode: iscontrollresponsecode, token: token));
   }
 }
 //endregion
@@ -1383,8 +1315,7 @@ extension EX_BuildContext on BuildContext {
 
   void open(Widget widget, {bool replace = false}) {
     if (replace)
-      Navigator.pushReplacement(
-          this, MaterialPageRoute(builder: (context) => widget));
+      Navigator.pushReplacement(this, MaterialPageRoute(builder: (context) => widget));
     else
       Navigator.push(this, MaterialPageRoute(builder: (context) => widget));
   }
@@ -1438,13 +1369,8 @@ class GizWidgetBorder extends StatelessWidget {
         decoration: !isHintInclude
             ? null
             : BoxDecoration(
-                color: isFiilSolid
-                    ? shadowColor ?? activeTheme.shadowColor
-                    : Colors.transparent,
-                border: !isFiilSolid
-                    ? Border.all(
-                        color: shadowColor ?? activeTheme.shadowColor, width: 2)
-                    : null,
+                color: isFiilSolid ? shadowColor ?? activeTheme.shadowColor : Colors.transparent,
+                border: !isFiilSolid ? Border.all(color: shadowColor ?? activeTheme.shadowColor, width: 2) : null,
                 borderRadius: BorderRadius.all(Radius.circular(5))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1457,8 +1383,7 @@ class GizWidgetBorder extends StatelessWidget {
                           padding: const EdgeInsets.all(4.0),
                           child: Text(
                             hint,
-                            style: TextStyle(
-                                color: hintColor ?? activeTheme.primaryColor),
+                            style: TextStyle(color: hintColor ?? activeTheme.primaryColor),
                           ),
                         )
                       : Container()
@@ -1477,14 +1402,8 @@ class GizWidgetBorder extends StatelessWidget {
                   decoration: isHintInclude
                       ? null
                       : BoxDecoration(
-                          color: isFiilSolid
-                              ? shadowColor ?? activeTheme.shadowColor
-                              : Colors.transparent,
-                          border: !isFiilSolid
-                              ? Border.all(
-                                  color: shadowColor ?? activeTheme.shadowColor,
-                                  width: 2)
-                              : null,
+                          color: isFiilSolid ? shadowColor ?? activeTheme.shadowColor : Colors.transparent,
+                          border: !isFiilSolid ? Border.all(color: shadowColor ?? activeTheme.shadowColor, width: 2) : null,
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -1582,8 +1501,7 @@ class GizEditText extends StatelessWidget {
   GizWidgetBorder border;
 
   Future<String> scanBarcode() async {
-    String res = await FlutterBarcodeScanner.scanBarcode(
-        "", "Kapat", true, ScanMode.DEFAULT);
+    String res = await FlutterBarcodeScanner.scanBarcode("", "Kapat", true, ScanMode.DEFAULT);
     text = res == "-1" ? "" : res;
 
     if (res != "-1" && onSubmitted != null) onSubmitted(text);
@@ -1628,8 +1546,7 @@ class GizEditText extends StatelessWidget {
 //region SearchText
 
 class GizSearchTextEditingController extends ValueNotifier<GizSearchTextValue> {
-  GizSearchTextEditingController({GizSearchTextValue value})
-      : super(value ?? GizSearchTextValue());
+  GizSearchTextEditingController({GizSearchTextValue value}) : super(value ?? GizSearchTextValue());
 }
 
 class GizSearchTextValue {
@@ -1739,8 +1656,7 @@ class GizDateText extends StatelessWidget {
       this.isHintInclude = false,
       this.shadowColor,
       this.hintColor}) {
-    if (firstDate == null)
-      firstDate = DateTime(DateTime.now().year - 150, 1, 1);
+    if (firstDate == null) firstDate = DateTime(DateTime.now().year - 150, 1, 1);
     if (lastDate == null) lastDate = DateTime(DateTime.now().year, 12, 31);
   }
 
@@ -1775,10 +1691,7 @@ class GizDateText extends StatelessWidget {
               ? Row(
                   children: [
                     Flexible(
-                      child: Container(
-                          width: double.maxFinite,
-                          child: Text(controller?.value.toFormat(),
-                              style: textStyle)),
+                      child: Container(width: double.maxFinite, child: Text(controller?.value.toFormat(), style: textStyle)),
                     ),
                     IconButton(
                         onPressed: () {},
@@ -1807,8 +1720,7 @@ class GizDateText extends StatelessWidget {
 }
 
 class GizDateTextEditingController extends ValueNotifier<DateTime> {
-  GizDateTextEditingController({DateTime value})
-      : super(value ?? DateTime.now());
+  GizDateTextEditingController({DateTime value}) : super(value ?? DateTime.now());
 }
 //endregion
 
@@ -1914,8 +1826,7 @@ class GizDropdown<T> extends StatefulWidget {
   _GizDropdownDropdownState<T> createState() => _GizDropdownDropdownState<T>();
 }
 
-class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
-    with TickerProviderStateMixin {
+class _GizDropdownDropdownState<T> extends State<GizDropdown<T>> with TickerProviderStateMixin {
   final LayerLink _layerLink = LayerLink();
   OverlayEntry _overlayEntry;
   bool _isOpen = false;
@@ -1929,8 +1840,7 @@ class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
   void initState() {
     super.initState();
 
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     _expandAnimation = CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeInOut,
@@ -2008,14 +1918,12 @@ class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
                 top: topOffset,
                 width: widget.dropdownStyle.width ?? size.width,
                 child: CompositedTransformFollower(
-                  offset:
-                      widget.dropdownStyle.offset ?? Offset(0, size.height + 5),
+                  offset: widget.dropdownStyle.offset ?? Offset(0, size.height + 5),
                   link: this._layerLink,
                   showWhenUnlinked: false,
                   child: Material(
                     elevation: widget.dropdownStyle.elevation ?? 0,
-                    borderRadius:
-                        widget.dropdownStyle.borderRadius ?? BorderRadius.zero,
+                    borderRadius: widget.dropdownStyle.borderRadius ?? BorderRadius.zero,
                     color: widget.dropdownStyle.color,
                     child: SizeTransition(
                       axisAlignment: 1,
@@ -2023,13 +1931,10 @@ class _GizDropdownDropdownState<T> extends State<GizDropdown<T>>
                       child: ConstrainedBox(
                         constraints: widget.dropdownStyle.constraints ??
                             BoxConstraints(
-                              maxHeight: MediaQuery.of(context).size.height -
-                                  topOffset -
-                                  15,
+                              maxHeight: MediaQuery.of(context).size.height - topOffset - 15,
                             ),
                         child: ListView(
-                          padding:
-                              widget.dropdownStyle.padding ?? EdgeInsets.zero,
+                          padding: widget.dropdownStyle.padding ?? EdgeInsets.zero,
                           shrinkWrap: true,
                           children: widget.items.asMap().entries.map((item) {
                             return InkWell(
