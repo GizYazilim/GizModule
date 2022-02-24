@@ -237,7 +237,7 @@ class BaseListFragment extends Fragment {
       child: Scaffold(
         appBar: !isChildWidget ? appbar : null,
         key: pageKey,
-        backgroundColor: activeTheme.primaryColor,
+        backgroundColor: BackgroundColor ?? activeTheme.primaryColor,
         body: Container(
           color: ListBackgroundColor,
           width: MediaQuery.of(buildContext).size.width,
