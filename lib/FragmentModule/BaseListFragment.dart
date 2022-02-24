@@ -10,6 +10,8 @@ class BaseListFragment extends Fragment {
   int menuID;
   bool isChildWidget;
   Color ListBackgroundColor;
+  Color BackgroundColor;
+
   ValueChanged<dynamic> onSearchResult;
 
   @override
@@ -19,7 +21,12 @@ class BaseListFragment extends Fragment {
   IBaseListTemplate baseListTemplate;
 
   BaseListFragment(this.menuID, String title,
-      {this.ListBackgroundColor = Colors.white, this.isChildWidget = true, this.onSearchResult, this.onDataLoad, this.baseListTemplate}) {
+      {this.BackgroundColor,
+      this.ListBackgroundColor = Colors.white,
+      this.isChildWidget = true,
+      this.onSearchResult,
+      this.onDataLoad,
+      this.baseListTemplate}) {
     this.title = title;
   }
 
@@ -215,7 +222,7 @@ class BaseListFragment extends Fragment {
     if (data == null) {
       dataLoad();
       return Scaffold(
-        backgroundColor: activeTheme.primaryColor,
+        backgroundColor: BackgroundColor ?? activeTheme.primaryColor,
         body: Center(
             child: Text(
           "Veri Yükleniyor...",
