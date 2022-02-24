@@ -11,6 +11,7 @@ class BaseListFragment extends Fragment {
   bool isChildWidget;
   Color ListBackgroundColor;
   Color BackgroundColor;
+  Color AppBarColor;
 
   ValueChanged<dynamic> onSearchResult;
 
@@ -21,7 +22,8 @@ class BaseListFragment extends Fragment {
   IBaseListTemplate baseListTemplate;
 
   BaseListFragment(this.menuID, String title,
-      {this.BackgroundColor,
+      {this.AppBarColor,
+      this.BackgroundColor,
       this.ListBackgroundColor = Colors.white,
       this.isChildWidget = true,
       this.onSearchResult,
@@ -36,6 +38,7 @@ class BaseListFragment extends Fragment {
 
   Widget get appbar => AppBar(
         title: GizText(title),
+        backgroundColor: AppBarColor ?? activeTheme.primaryColor,
         actions: [
           if (data["Filters"]?.length > 0)
             IconButton(
