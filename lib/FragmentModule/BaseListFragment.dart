@@ -9,6 +9,7 @@ import 'IBaseListTemplate.dart';
 class BaseListFragment extends Fragment {
   int menuID;
   bool isChildWidget;
+  Color ListBackgroundColor;
   ValueChanged<dynamic> onSearchResult;
 
   @override
@@ -17,7 +18,8 @@ class BaseListFragment extends Fragment {
   ValueGetter<dynamic> onDataLoad;
   IBaseListTemplate baseListTemplate;
 
-  BaseListFragment(this.menuID, String title, {this.isChildWidget = true, this.onSearchResult, this.onDataLoad, this.baseListTemplate}) {
+  BaseListFragment(this.menuID, String title,
+      {this.ListBackgroundColor = Colors.white, this.isChildWidget = true, this.onSearchResult, this.onDataLoad, this.baseListTemplate}) {
     this.title = title;
   }
 
@@ -230,7 +232,7 @@ class BaseListFragment extends Fragment {
         key: pageKey,
         backgroundColor: activeTheme.primaryColor,
         body: Container(
-          color: Colors.white,
+          color: ListBackgroundColor,
           width: MediaQuery.of(buildContext).size.width,
           child: hasTemplate
               ? SingleChildScrollView(
